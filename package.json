@@ -1,0 +1,30 @@
+{
+  "name": "kodama",
+  "version": "0.3.0",
+  "description": "d3 tooltip with jquery support",
+  "main": "kodama.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DarkMarmot/kodama.git"
+  },
+  "keywords": [
+    "d3",
+    "tooltip",
+    "popover"
+  ],
+  "authors": [
+    "Scott Southworth <scott.southworth@gmail.com>",
+    "Landon Barnickle <landon.barnickle@gmail.com>"
+  ],
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/DarkMarmot/kodama/issues"
+  },
+  "homepage": "https://github.com/DarkMarmot/kodama",
+  "dependencies": {
+    "d3": "^3.5.5"
+  }
+}
