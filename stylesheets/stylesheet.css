@@ -7,7 +7,9 @@ body {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
-    color: #606c71; }
+    color: #4D7486;
+    background-color: rgb(11, 47, 77);
+}
 
 a {
     color: #1e6bb8;
@@ -65,13 +67,13 @@ a:hover {
     .page-header {
         padding: 5rem 6rem; } }
 
-@media screen and (min-width: 48em) and (max-width: 64em) {
+@media screen and (min-width: 42em) and (max-width: 64em) {
     .left_guy { top: -16rem; left: 2rem; }
     .right_guy { top: -13.8rem; right: 2rem; }
     .page-header {
         padding: 3rem 4rem; } }
 
-@media screen and (max-width: 48em) {
+@media screen and (max-width: 42em) {
     .left_guy { top: -16rem; left: 2rem; }
     .right_guy { top: -13.8rem; right: 2rem; }
     .page-header {
@@ -118,9 +120,14 @@ a:hover {
     margin-top: 2rem;
     margin-bottom: 1rem;
     font-weight: normal;
-    color: #159957; }
+    color: #9AC0D2;
+    font-weight: bold;
+    text-shadow: 0 -1px 40px rgba(0, 216, 255, .75);
+}
 .main-content p {
-    margin-bottom: 1em; }
+    margin-bottom: 1em;
+    /* text-shadow: -1px -1px 1px rgba(255, 255, 255, 0.5); */
+}
 .main-content code {
     padding: 2px 4px;
     font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
@@ -133,16 +140,16 @@ a:hover {
     margin-top: 0;
     margin-bottom: 1rem;
     font: 1rem Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    color: #567482;
+    color: #FFFFFF;
     word-wrap: normal;
-    background-color: #f3f6fa;
-    border: solid 1px #dce6f0;
+    background-color: #47638E;
+    border: solid 1px #3696B8;
     border-radius: 0.3rem; }
 .main-content pre > code {
     padding: 0;
     margin: 0;
     font-size: 0.9rem;
-    color: #567482;
+    color: #CADAE2;
     word-break: normal;
     white-space: pre;
     background: transparent;
