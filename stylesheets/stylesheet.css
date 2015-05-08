@@ -65,13 +65,13 @@ a:hover {
     .page-header {
         padding: 5rem 6rem; } }
 
-@media screen and (min-width: 42em) and (max-width: 64em) {
+@media screen and (min-width: 48em) and (max-width: 64em) {
     .left_guy { top: -16rem; left: 2rem; }
     .right_guy { top: -13.8rem; right: 2rem; }
     .page-header {
         padding: 3rem 4rem; } }
 
-@media screen and (max-width: 42em) {
+@media screen and (max-width: 48em) {
     .left_guy { top: -16rem; left: 2rem; }
     .right_guy { top: -13.8rem; right: 2rem; }
     .page-header {
