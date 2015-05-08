@@ -60,14 +60,20 @@ a:hover {
     background-image: linear-gradient(120deg, #155799, #158A99); }
 
 @media screen and (min-width: 64em) {
+    .left_guy { top: 1rem; left: 1rem; }
+    .right_guy { top: 7rem; right: 1rem; }
     .page-header {
         padding: 5rem 6rem; } }
 
 @media screen and (min-width: 42em) and (max-width: 64em) {
+    .left_guy { top: 1rem; left: .5rem; }
+    .right_guy { top: 5rem; right: .5rem; }
     .page-header {
         padding: 3rem 4rem; } }
 
 @media screen and (max-width: 42em) {
+    .left_guy { top: 1rem; left: .25rem; }
+    .right_guy { top: 4rem; right: .25rem; }
     .page-header {
         padding: 2rem 1rem; } }
 
