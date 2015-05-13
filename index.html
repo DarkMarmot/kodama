@@ -129,7 +129,57 @@
                 }
         );
 
+        var voronoi = d3.geom.voronoi()
+                .x(function(d) { return d.cx; })
+                .y(function(d) { return d.cy; })
+                .clipExtent([[0, 0], [1000, 600]]);
+
+        var voronoiData = voronoi(nodes);
+
+        nodes.forEach(function(d, i){ d.voronoiData = voronoi[i];})
+
+        var voronoiSel = voronoiLayer.selectAll("path")
+                .data(nodes);
+
+        voronoiSel
+                .enter()
+                .append("path")
+                .style("fill", 'rgb(100,100,100)')
+                .style('fill-opacity',.5)
+                .style('stroke', 'rgb(80,90,99')
+                .style('stroke-opacity',1)
+                .style('visibility','hidden')
+                .style('pointer-events','all')
+                .call(d3.kodama.tooltip()
+                        .attr({class: 'katana_tooltip_small'})
+                        .prep(self.getTipDestData))
+                .on('mouseenter', function(d){
+                    console.log('von',d);
+                })
+                .on('mouseleave', function(d){
+                    console.log('vout',d);
+                })
+        ;
+
+        voronoiSel
+                .attr("d", function(d, i) {
+                    return "M" + d.voronoiData.join("L") + "Z";
+                });
+
+        voronoiSel.exit().remove();
+
+        var makeTipData = function(d, i){
+            return {
+                title: 'Kodama Node ' + i,
+                items: [
+                    { title: 'Hue', value: d3.format(',d')(Math.round(Number(d.hue)))},
+                    { title: 'Radius', value: d3.format(',d')(Math.round(Number(d.radius)))}
+                ]
+            };
+        };
+
         var circleSel = nodeLayer.selectAll('circle').data(nodes);
+
 
         circleSel.enter()
                 .append('circle')
@@ -142,16 +192,7 @@
                 .style("stroke-width", 1)
                 .style('opacity', function(d, i){ return i / nodes.length; })
                 .call(d3.kodama.tooltip()
-
-                        .prep(function(d, i){
-                            return {
-                            title: 'Kodama Node ' + i,
-                                    items: [
-                                        { title: 'Hue', value: d3.format(',d')(Math.round(Number(d.hue)))},
-                                        { title: 'Radius', value: d3.format(',d')(Math.round(Number(d.radius)))}
-                                    ]
-                        };
-                })
+                        .prep(makeTipData)
                         .attr({class: 'kodama_tooltip'}))
                 .on('mouseover', function(d){
                     d3.select(this).attr('r', function(d) { return d.radius * 2; })
