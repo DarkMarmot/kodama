@@ -7,6 +7,26 @@
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+
+    <style>
+
+        .kodama_tooltip {
+
+            padding: 4px;
+            background: linear-gradient(to top, rgb(16, 74, 105) 0%, rgb(14, 96, 125) 90%);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            border-color: rgb(57, 208, 204);
+            border-width: 1px;
+            border-style: solid;
+            color: rgb(245,240,220);
+            border-radius: 4px;
+            font-size: 12px;
+            box-shadow: 0px 1px 3px rgba(0,20,40,.5);
+
+        }
+
+    </style>
+
 </head>
 <body>
 <section class="page-header">
@@ -115,15 +135,18 @@
                 .style("stroke", function(d) { return "hsl(" + d.hue + ", 100%, 50%)" })
                 .style("stroke-width", 1)
                 .style('opacity', function(d, i){ return i / nodes.length; })
-                .call(d3.kodama.tooltip().prep(function(d, i){
-                    return {
-                        title: 'Node ' + i,
-                                items: [
-                                    { title: 'Hue', value: d3.format(',d')(Math.round(Number(d.hue)))},
-                                    { title: 'Radius', value: d3.format(',d')(d.radius)}
-                                ]
-                    };
+                .call(d3.kodama.tooltip()
+                        .attr('class', 'kodama_tooltip')
+                        .prep(function(d, i){
+                            return {
+                            title: 'Node ' + i,
+                                    items: [
+                                        { title: 'Hue', value: d3.format(',d')(Math.round(Number(d.hue)))},
+                                        { title: 'Radius', value: d3.format(',d')(Math.round(Number(d.radius)))}
+                                    ]
+                        };
                 }))
+
         ;
 
 
