@@ -136,7 +136,7 @@
 
         var voronoiData = voronoi(nodes);
 
-        nodes.forEach(function(d, i){ d.voronoiData = voronoi[i];})
+        nodes.forEach(function(d, i){ d.voronoiData = voronoiData[i];})
 
         var voronoiSel = voronoiLayer.selectAll("path")
                 .data(nodes);
