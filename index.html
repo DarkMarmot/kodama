@@ -190,7 +190,7 @@
                         .attr({class: 'kodama_tooltip'}))
                 .on('mouseover', function(d){
                     var node = d;
-                    d3.select(this).style('fill-opacity',.75);
+                    d3.select(this).style('fill-opacity',.85).style('fill', 'rgb(230,240,255)');
                     circleSel.filter(function(d){ return d.name === node.name;})
                             .style('opacity',.8 )
                             .attr('r', function(d) { return d.radius * 2.5; })
@@ -198,7 +198,7 @@
                 .on('mouseout', function(d){
 
                     var node = d;
-                    d3.select(this).style('fill-opacity',.25);
+                    d3.select(this).style('fill-opacity',.25).style('fill', 'rgb(100,200,255)');
                     circleSel.filter(function(d){ return d.name === node.name;})
                             .transition().duration(1000)
                             .style('opacity', function(d){ return d.alpha})
