@@ -113,7 +113,8 @@
                 .attr("r", function(d){ return d.radius; })
                 .attr("fill", function(d) { return "hsl(" + d.hue + ", 100%, 75%)" })
                 .style("stroke", function(d) { return "hsl(" + d.hue + ", 100%, 50%)" })
-                .style("stroke-width", 1);
+                .style("stroke-width", 1)
+                .style('opacity', function(d, i){ return i / nodes.length; });
 
     });
 
