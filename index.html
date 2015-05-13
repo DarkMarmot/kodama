@@ -166,30 +166,41 @@
         var voronoiSel = voronoiLayer.selectAll("path")
                 .data(nodes);
 
+        var showVoronoi = false;
+
+        function toggleVoronoi(){
+            showVoronoi = !showVoronoi;
+            var vis = showVoronoi ? 'visible' : 'hidden';
+            voronoiSel.style('visibility', vis);
+        }
+
         voronoiSel
                 .enter()
                 .append("path")
                 .style("fill", 'rgb(100,200,255)')
-                .style('fill-opacity',.5)
+                .style('fill-opacity',.25)
                 .style('stroke', 'rgb(80,220,240')
                 .style('stroke-opacity',1)
-                .style('visibility','visible')
+                .style('visibility','hidden')
                 .style('pointer-events','all')
                 .call(d3.kodama.tooltip()
                         .prep(makeTipData)
                         .attr({class: 'kodama_tooltip'}))
                 .on('mouseover', function(d){
                     var node = d;
+                    d3.select(this).style('fill-opacity',.75);
                     circleSel.filter(function(d){ return d.name === node.name;})
                             .attr('r', function(d) { return d.radius * 3; })
                 })
                 .on('mouseout', function(d){
 
                     var node = d;
+                    d3.select(this).style('fill-opacity',.25);
                     circleSel.filter(function(d){ return d.name === node.name;})
                             .transition().duration(1000)
                             .attr('r', function(d) { return d.radius; });
                 })
+                .on('click', toggleVoronoi)
         ;
 
         voronoiSel
