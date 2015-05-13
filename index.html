@@ -149,12 +149,13 @@
                 })
                         .attr({class: 'kodama_tooltip'}))
                 .on('mouseover', function(d){
-                    d3.select(this).transition().duration(500)
-                            .attr('r', function(d) { return d.radius * 1.2; })
+                    d3.select(this).transition().duration(100)
+                            .attr('r', function(d) { return d.radius * 2; })
                 })
                 .on('mouseout', function(d){
-                    d3.select(this).transition().duration(500)
+                    d3.select(this).transition().duration(1000)
                             .attr('r', function(d) { return d.radius; })
+
                 })
 
         ;
