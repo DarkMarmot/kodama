@@ -138,36 +138,6 @@
 
         nodes.forEach(function(d, i){ d.voronoiData = voronoiData[i];})
 
-        var voronoiSel = voronoiLayer.selectAll("path")
-                .data(nodes);
-
-        voronoiSel
-                .enter()
-                .append("path")
-                .style("fill", 'rgb(100,100,100)')
-                .style('fill-opacity',.5)
-                .style('stroke', 'rgb(80,90,99')
-                .style('stroke-opacity',1)
-                .style('visibility','hidden')
-                .style('pointer-events','all')
-                .call(d3.kodama.tooltip()
-                        .attr({class: 'katana_tooltip_small'})
-                        .prep(self.getTipDestData))
-                .on('mouseenter', function(d){
-                    console.log('von',d);
-                })
-                .on('mouseleave', function(d){
-                    console.log('vout',d);
-                })
-        ;
-
-        voronoiSel
-                .attr("d", function(d, i) {
-                    return "M" + d.voronoiData.join("L") + "Z";
-                });
-
-        voronoiSel.exit().remove();
-
         var makeTipData = function(d, i){
             return {
                 title: 'Kodama Node ' + i,
@@ -191,19 +161,45 @@
                 .style("stroke", function(d) { return "hsl(" + d.hue + ", 100%, 50%)" })
                 .style("stroke-width", 1)
                 .style('opacity', function(d, i){ return i / nodes.length; })
+        ;
+
+        var voronoiSel = voronoiLayer.selectAll("path")
+                .data(nodes);
+
+        voronoiSel
+                .enter()
+                .append("path")
+                .style("fill", 'rgb(100,100,100)')
+                .style('fill-opacity',.5)
+                .style('stroke', 'rgb(80,90,99')
+                .style('stroke-opacity',1)
+                .style('visibility','hidden')
+                .style('pointer-events','all')
                 .call(d3.kodama.tooltip()
                         .prep(makeTipData)
                         .attr({class: 'kodama_tooltip'}))
                 .on('mouseover', function(d){
-                    d3.select(this).attr('r', function(d) { return d.radius * 2; })
+                    //d3.select(this)
+                    var node = d;
+                    circleSel.filter(function(d){ return d.name === node.name;}).attr('r', function(d) { return d.radius * 2; })
                 })
                 .on('mouseout', function(d){
                     d3.select(this).transition().duration(1000)
                             .attr('r', function(d) { return d.radius; })
 
                 })
-
         ;
+
+        voronoiSel
+                .attr("d", function(d, i) {
+                    return "M" + d.voronoiData.join("L") + "Z";
+                });
+
+        voronoiSel.exit().remove();
+
+
+
+
 
 
 
