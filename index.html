@@ -114,7 +114,20 @@
                 .attr("fill", function(d) { return "hsl(" + d.hue + ", 100%, 75%)" })
                 .style("stroke", function(d) { return "hsl(" + d.hue + ", 100%, 50%)" })
                 .style("stroke-width", 1)
-                .style('opacity', function(d, i){ return i / nodes.length; });
+                .style('opacity', function(d, i){ return i / nodes.length; })
+                .call(d3.kodama.tooltip().prep(function(d, i){
+                    return {
+                        title: 'Node ' + i,
+                                items: [
+                                    { title: 'Hue', value: d3.format(',d')(Math.round(Number(d.hue)))},
+                                    { title: 'Radius', value: d3.format(',d')(d.radius)}
+                                ]
+                    };
+                }))
+        ;
+
+
+
 
     });
 

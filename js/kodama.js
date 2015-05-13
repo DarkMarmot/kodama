@@ -179,9 +179,9 @@
         var _tooltip = function _tooltip(selection) {
 
             selection
-                .on('mouseover.tooltip', function (d) {
+                .on('mouseover.tooltip', function (d, i) {
 
-                    _tooltip.show(d);
+                    _tooltip.show(d, i);
 
                     
                 })
@@ -226,14 +226,14 @@
             return this;
         };
 
-        _tooltip.show = function (d) {
+        _tooltip.show = function (d, i) {
 
             // format and build if base data or prep function has changed
             if(d !== rawTipData || _prep !== lastPrep) {
 
                 lastPrep = _prep;
                 rawTipData = d;
-                dispTipData = _prep(rawTipData);
+                dispTipData = _prep(rawTipData, i);
                 _buildMethod(dispTipData);
 
             }
