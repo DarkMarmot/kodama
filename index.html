@@ -125,7 +125,9 @@
                         hue: Math.random() * 80 + 180,
                         radius: (n *.2 + 2),
                         cx: Math.random() * 950 + 25,
-                        cy: Math.random() * 550 + 25 }
+                        cy: Math.random() * 550 + 25,
+                        alpha: n / 300.0 * .9
+                    }
                 }
         );
 
@@ -140,7 +142,7 @@
 
         var makeTipData = function(d, i){
             return {
-                title: 'Kodama Node ' + i,
+                title: 'This is Kodama Node #' + i,
                 items: [
                     { title: 'Hue', value: d3.format(',d')(Math.round(Number(d.hue)))},
                     { title: 'Radius', value: d3.format(',d')(Math.round(Number(d.radius)))}
@@ -153,14 +155,14 @@
 
         circleSel.enter()
                 .append('circle')
-                .attr('name', function(d, i) { return d.name; })
+                .attr('name', function(d) { return d.name; })
                 .attr("cx", function(d){ return d.cx; })
                 .attr("cy", function(d){ return d.cy; })
                 .attr("r", function(d){ return d.radius; })
                 .attr("fill", function(d) { return "hsl(" + d.hue + ", 100%, 75%)" })
                 .style("stroke", function(d) { return "hsl(" + d.hue + ", 100%, 50%)" })
                 .style("stroke-width", 1)
-                .style('opacity', function(d, i){ return i / nodes.length; })
+                .style('opacity', function(d){ return d.alpha; })
         ;
 
         var voronoiSel = voronoiLayer.selectAll("path")
@@ -190,6 +192,7 @@
                     var node = d;
                     d3.select(this).style('fill-opacity',.75);
                     circleSel.filter(function(d){ return d.name === node.name;})
+                            .attr('opacity', function(d){ return 1})
                             .attr('r', function(d) { return d.radius * 3; })
                 })
                 .on('mouseout', function(d){
@@ -198,6 +201,7 @@
                     d3.select(this).style('fill-opacity',.25);
                     circleSel.filter(function(d){ return d.name === node.name;})
                             .transition().duration(1000)
+                            .attr('opacity', function(d){ return d.alpha})
                             .attr('r', function(d) { return d.radius; });
                 })
                 .on('click', toggleVoronoi)
