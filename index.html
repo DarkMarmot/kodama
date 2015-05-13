@@ -192,7 +192,7 @@
                     var node = d;
                     d3.select(this).style('fill-opacity',.75);
                     circleSel.filter(function(d){ return d.name === node.name;})
-                            .attr('opacity', 1.0 )
+                            .style('opacity',.9 )
                             .attr('r', function(d) { return d.radius * 3; })
                 })
                 .on('mouseout', function(d){
@@ -201,7 +201,7 @@
                     d3.select(this).style('fill-opacity',.25);
                     circleSel.filter(function(d){ return d.name === node.name;})
                             .transition().duration(1000)
-                            .attr('opacity', function(d){ return d.alpha})
+                            .style('opacity', function(d){ return d.alpha})
                             .attr('r', function(d) { return d.radius; });
                 })
                 .on('click', toggleVoronoi)
