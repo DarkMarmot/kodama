@@ -115,10 +115,11 @@
 
         var nodes = d3
                 .range(300)
-                .map(function() {
+                .reverse()
+                .map(function(n) {
                     return {
                         hue: Math.random() * 80 + 180,
-                        radius: Math.random() * Math.random() * 20 + 2,
+                        radius: Math.sqrt(n + 1),
                         cx: Math.random() * 900 + 50,
                         cy: Math.random() * 500 + 50 }
                 }
