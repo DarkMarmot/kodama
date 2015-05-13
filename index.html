@@ -136,7 +136,7 @@
                 .style("stroke-width", 1)
                 .style('opacity', function(d, i){ return i / nodes.length; })
                 .call(d3.kodama.tooltip()
-                        .attr('class', 'kodama_tooltip')
+                        .attr({class: 'kodama_tooltip'})
                         .prep(function(d, i){
                             return {
                             title: 'Node ' + i,
