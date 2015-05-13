@@ -55,7 +55,7 @@
         <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
 
     <div>
-        <svg id="svg_demo" height="100%" width="100%" viewBox="0 0 1000 610" preserveAspectRatio="none">
+        <svg id="svg_demo" height="100%" width="100%" viewBox="0 0 1000 600" preserveAspectRatio="none">
         </svg>
     </div>
     <p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
@@ -88,12 +88,33 @@
 <script src="js/kodama.js"></script>
 
 <script>
+
     $(function(){
 
+        var svg = d3.select('#svg_demo');
 
+        var nodes = d3
+                .range(100)
+                .map(function() {
+                    return {
+                        radius: Math.random() * 20 + 5,
+                        cx: Math.random() * 900 + 50,
+                        cy: Math.random() * 500 + 50 }
+                }
+        );
 
+        for (var i = 0; i < nodes.length; i++) {
+            svg.append("circle")
+                    .attr("cx", nodes[i].cx)
+                    .attr("cy", nodes[i].cy)
+                    .attr("r", nodes[i].radius)
+                    .attr("fill", function() { return "hsl(" + Math.random() * 360 + ", 100%, 75%)" })
+                    .style("stroke", function() { return "hsl(" + Math.random() * 360 + ", 100%, 50%)" })
+                    .style("stroke-width", 1);
+        }
 
     });
+
 </script>
 
 </body></html>
