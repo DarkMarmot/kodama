@@ -117,7 +117,7 @@
         var voronoiLayer = svg.append('g');
 
         var nodes = d3
-                .range(300)
+                .range(150)
                 .reverse()
                 .map(function(n) {
                     return {
@@ -126,7 +126,7 @@
                         radius: (n *.2 + 2),
                         cx: Math.random() * 950 + 25,
                         cy: Math.random() * 550 + 25,
-                        alpha: (1.0 - (n / 300.0)) *.8
+                        alpha: (1.0 - (n / 150.0)) *.8
                     }
                 }
         );
