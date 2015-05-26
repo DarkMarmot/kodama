@@ -7,11 +7,9 @@
 
 ## API Documentation
 
-|tooltip | none | Creates a tooltip configuration instance used by D3's call method. Methods described in the Tooltip section below can be chained upon it. | config instance | 
-
 ### Kodama Global Configuration Methods
 
-Methods invoked on the d3.kodama namespace can be chained when used as setters. If called without an argument, each will return the current global setting.
+Methods invoked on the d3.kodama namespace can be chained when used as setters. If called without an argument, each will return the current global setting. These settings are applied as the defaults for all Kodama tooltips.
 
 |Name | Parameters | Description |
 |-----|------------------------|-------------|
@@ -21,7 +19,7 @@ Methods invoked on the d3.kodama namespace can be chained when used as setters. 
 |themeRegistry | name: string, config: object | Adds or updates named themes that can be used by tooltips. The config object should contain CSS as JSON with object properties named: frame, pane, title, item_title and item_value. the default theme for tooltips. Note: this theme name must be in the themeRegistry. |
 |tooltip | none | Returns a configuration instance to be used by d3's 'call' method; its API is listed in the next section. |
 
-### Kodama Instance Configuration Methods
+### Tooltip Instance Configuration Methods
 
 Methods invoked on the d3.kodama.tooltip() instance can be chained when used as setters. Defaults will be derived from the global configuration methods listed above.
 
