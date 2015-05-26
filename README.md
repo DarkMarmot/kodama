@@ -10,7 +10,6 @@ Methods invoked on the d3.kodama namespace can be chained when used as setters. 
 
 |Name | Parameters | Description |
 |-----|------------|-------------|
-
 |gravity | direction: string [cardinal direction or css placement (top, left, etc.)] | Sets a favored default direction (floating away from the mouse) for all tooltips | 
 |distance | distance: number | Sets the default pixel distance between the tooltip box and the mouse pointer. |
 |theme | name: string | Sets the default theme for tooltips. Note: this theme name must be in the themeRegistry. |
