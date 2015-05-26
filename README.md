@@ -19,7 +19,7 @@ Methods invoked on the d3.kodama namespace can be chained when used as setters. 
 |distance | distance: number | Sets the default pixel distance between the tooltip box and the mouse pointer. |
 |theme | name: string | Sets the default theme for tooltips. Note: this theme name must be present in the themeRegistry. |
 |themeRegistry | name: string, config: object | Adds or updates named themes that can be used by tooltips. The config object should contain CSS as JSON with object properties named: frame, pane, title, item_title and item_value. the default theme for tooltips. Note: this theme name must be in the themeRegistry. |
-|tooltip | none | Returns a configuration instance that be used by d3's call method; its API is listed in the next section. |
+|tooltip | none | Returns a configuration instance to be used by d3's 'call' method; its API is listed in the next section. |
 
 ### Kodama Instance Configuration Methods
 
