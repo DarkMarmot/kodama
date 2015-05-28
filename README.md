@@ -28,7 +28,7 @@ Methods invoked on the d3.kodama.tooltip() instance can be chained when used as 
 |gravity | direction: string (any cardinal direction or css placement such as north, southwest, top, left, upper-right, etc.) | Sets a favored default direction (floating away from the mouse) for this tooltip | 
 |distance | distance: number | Sets the default pixel distance between this tooltip box and the mouse pointer. |
 |theme | name: string | Sets the theme for this tooltip. Note: this theme name must be present in the global themeRegistry. |
-|format | callback(data): function | Sets the default format function for the tooltip. It takes the current data as an argument and returns a formatted object representing the tooltip display (as detailed below). |
-|show | callback(data, formatter): function | Manually activates the tooltip, formatting the given data into a tooltip display object (detailed below) using a formatter function if given. This method is called automatically behind the scenes if the tooltip has been associated with a D3 selection using the 'call' method. |
+|format | callback(data:*): function | Sets the default format function for the tooltip. It takes the current data as an argument and returns a formatted object representing the tooltip display (as detailed below). |
+|show | callback(data:*, format:function): function | Manually activates the tooltip, formatting the given data into a tooltip display object (detailed below) using a formatter function if given. This method is called automatically behind the scenes if the tooltip has been associated with a D3 selection using the 'call' method. |
 
 
