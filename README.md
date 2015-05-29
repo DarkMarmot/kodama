@@ -8,11 +8,12 @@ I had two primary motivations for writing this library. First, I had a data visu
 
 ## Installation
 
-## Usage
+## Basic Usage
 
 ```javascript
   d3_enter_selection.call(d3.kodama.tooltip()); // if the data IS the tooltip display data
   d3_enter_selection.call(d3.kodama.tooltip().format(formatFunc)); // to transform bound data to tooltip display data
+  jquery_selection.kodama_tooltip(tooltip_display_data); // to set a tooltip with a format object
 ```
 
 ## Examples
