@@ -1,8 +1,16 @@
 # Kodama -- D3 Tooltip
 
+Kodama is a D3-based tooltip system designed to be simple, fast and small with a fluent API. It can be styled without CSS classes (which I view as terribly heretical global variables for a large, modular application). And it can support a preferred directional 'gravity' that will adjust itself so as to stay on the screen.
+
+It can be used across an entire site for consistency, but integrates canonically with D3's API. If using jQuery in addition to D3, you can include a tiny plugin to add tooltips to any jQuery selection. 
+
+I had two primary motivations for writing this library. First, I had a data visualization application whose highest hit on the CPU profiler was Bootstrap's Popover. Thus, I really wanted to replace it. Second, I thought making a tooltip based on D3 would be kind of fun.
+
 ## Installation
 
-## Usage and Examples
+## Usage
+
+## Examples
 
 
 ## API Documentation
