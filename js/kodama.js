@@ -1,4 +1,3 @@
-
 ;(function (root, factory) {
 
     if (typeof define === 'function' && define.amd) {
@@ -367,7 +366,3 @@ $.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(toolti
     return this;
 
 };
-
-
-
-
