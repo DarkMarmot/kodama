@@ -168,7 +168,7 @@
         var voronoiSel = voronoiLayer.selectAll("path")
                 .data(nodes);
 
-        var showVoronoi = false;
+        var showVoronoi = true;
 
         function toggleVoronoi(){
             showVoronoi = !showVoronoi;
@@ -203,7 +203,7 @@
                             .style('opacity', function(d){ return d.alpha})
                             .attr('r', function(d) { return d.radius; });
                 })
-                .on('click', toggleVoronoi)
+                //.on('click', toggleVoronoi)
         ;
 
         voronoiSel
