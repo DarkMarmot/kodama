@@ -1,4 +1,3 @@
-
 ;(function (root, factory) {
 
     if (typeof define === 'function' && define.amd) {
@@ -131,7 +130,8 @@
     // returns a function/object with a config api and accepting a d3 selection to wire handlers
     kodama.tooltip = function() {
 
-        var _sourceData = d3.functor(undefined);
+        var _sourceKey = undefined;
+        var _sourceData = undefined;
         var _formatFunc = null;
         var _gravityDirection = defaultGravityDirection;
         var _gravity = defaultGravity;
@@ -266,9 +266,9 @@
         var _tooltip = function _tooltip(selection) {
 
             selection
-                .on('mouseover.tooltip', function (d) {
+                .on('mouseover.tooltip', function (d, i) {
 
-                    _tooltip.show(d);
+                    _tooltip.show(d, i);
 
                 })
                 .on('mousedown.tooltip', function () {
@@ -329,19 +329,17 @@
             return this;
         };
 
-        _tooltip.show = function(sourceData, formatFunc){
+        _tooltip.show = function(sourceData, sourceKey){
 
-            _sourceData = d3.functor(sourceData); // || _sourceData);
-            _formatFunc = formatFunc || _formatFunc;
-
-            var currSourceData = _sourceData();
-
-            if(currSourceData !== lastSourceDataShown || _formatFunc !== lastFormatFuncShown){
+            _sourceData = sourceData; 
+            _sourceKey = sourceKey;
+            
+            if(_sourceData !== lastSourceDataShown || _formatFunc !== lastFormatFuncShown){
 
                 lastFormatFuncShown = _formatFunc;
-                lastSourceDataShown = currSourceData;
+                lastSourceDataShown = _sourceData;
 
-                tipDisplayData = _formatFunc ? _formatFunc(currSourceData) : currSourceData;
+                tipDisplayData = _formatFunc ? _formatFunc(_sourceData, _sourceKey) : _sourceData;
                 _buildMethod();
 
             }
@@ -361,14 +359,10 @@
 $.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(tooltipData){
 
     var self = this;
-    d3.selectAll(self.toArray())
-        .call(d3.kodama.tooltip()
-            .show(tooltipData));
-    // .format(function(){ return tooltipData;}));
+    var els = self.toArray();
+    var arr = d3.range(els.length).map(function(){return tooltipData;});
+    d3.selectAll(els).data(arr).call(d3.kodama.tooltip());
+            
     return this;
 
 };
-
-
-
-
