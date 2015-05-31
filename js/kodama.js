@@ -362,7 +362,7 @@ $.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(toolti
     var self = this;
     var els = self.toArray();
     var arr = d3.range(els.length).map(function(){return tooltipData;});
-    d3.selectAll(els).data(arr).call(d3.kodama.tooltip();
+    d3.selectAll(els).data(arr).call(d3.kodama.tooltip());
             
     return this;
 
