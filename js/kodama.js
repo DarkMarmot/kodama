@@ -38,36 +38,119 @@
     // handles screen gravity offset placement and transitions
     var holderSel = tipSel.append('div').style('position', 'relative');
 
+
+    var gravityDefs = {
+
+        northwest: [-1, -1],
+        topleft: [-1, -1],
+        upperleft: [-1, -1],
+        northeast: [1, -1],
+        topright: [1, -1],
+        upperright: [1, -1],
+        southwest: [-1, 1],
+        bottomleft: [-1, 1],
+        lowerleft: [-1, 1],
+        southeast: [1, 1],
+        bottomright: [1, 1],
+        lowerright: [1, 1],
+        north: [0, -1],
+        top: [0, -1],
+        south: [0, 1],
+        bottom: [0, -1],
+        west: [-1, 0],
+        left: [-1, 0],
+        right: [1, 0],
+        east: [1, 0],
+        center: [0, 0]
+
+    };
+
+    function resolveGravity(name) {
+        name = name.split('-').join();
+        return gravityDefs[name];
+    }
+
+    var themesByName = {};
+
     var offsets = {};
     var offsetSwitch = [0, 0];
     var offsetKey = "0:0";
-    var dispTipData = null;
-    var rawTipData = null;
-    var lastPrep = null;
+    var tipDisplayData = null;
+
+    var lastSourceDataShown;
+    var lastFormatFuncShown;
+
+    var defaultThemeName = 'kodama_small';
+    var defaultGravityDirection = 'top';
+    var defaultGravity = resolveGravity(defaultGravityDirection);
+    var defaultDistance = 25;
+
+    var defaultTheme = themesByName[defaultThemeName] = {
+        frame: {
+            padding: '4px',
+            background: 'linear-gradient(to top, rgb(16, 74, 105) 0%, rgb(14, 96, 125) 90%)',
+            'font-family': '"Helvetica Neue", Helvetica, Arial, sans-serif',
+            'border': '1px solid rgb(57, 208, 204)',
+            color: 'rgb(245,240,220)',
+            'border-radius': '4px',
+            'font-size': '12px',
+            'box-shadow': '0px 1px 3px rgba(0,20,40,.5)'
+        },
+        pane: {},
+        title: {'text-align': 'center', 'padding': '4px'},
+        item_title: {'text-align': 'right', 'color': 'rgb(220,200,120)'},
+        item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(234, 224, 184)'}
+    };
+
+    kodama.distance = function(distance){
+        if(arguments.length === 0) return defaultDistance;
+        defaultDistance = distance || 25;
+        return kodama;
+    };
+
+    kodama.gravity = function(direction){
+        if(arguments.length === 0) return defaultGravityDirection;
+        defaultGravityDirection = direction || 'top';
+        defaultGravity = resolveGravity(defaultGravityDirection);
+        return kodama;
+    };
+
+    kodama.theme = function(name){
+        if(arguments.length === 0) return defaultThemeName;
+        defaultThemeName = name;
+        defaultTheme = themesByName[defaultThemeName];
+        return kodama;
+    };
+
+    kodama.themeRegistry = function(name, config){
+        if(arguments.length === 1) return themesByName[name];
+        themesByName[name] = config;
+        return kodama;
+    };
 
     // returns a function/object with a config api and accepting a d3 selection to wire handlers
     kodama.tooltip = function() {
 
-
-        var _prep = function (d) { return d; }; // identity function default
+        var _sourceData = d3.functor(undefined);
+        var _formatFunc = null;
+        var _gravityDirection = defaultGravityDirection;
+        var _gravity = defaultGravity;
+        var _theme = defaultTheme;
+        var _shift = defaultDistance;
 
         var attrs = {};
         var styles = {};
 
-        var shift = 25;
+        var _buildMethod = function build() {
 
-
-        var _buildMethod = function build(tipData) {
-
-
-            if (!tipData) return;
+            if (!tipDisplayData) return;
 
             holderSel.selectAll('*').remove();
 
             holderSel
                 .attr(attrs)
-                .style(styles)
-                .datum(tipData)
+                .style(_theme.frame)
+                .datum(tipDisplayData)
                 .each(function (d) {
 
                     var sel = d3.select(this);
@@ -75,8 +158,7 @@
                     if (d.title) {
                         sel
                             .append('div')
-
-                            .style({'text-align': 'center', 'padding': '4px'})
+                            .style(_theme.title)
                             .append('span')
                             .html(d.title);
                     }
@@ -93,14 +175,9 @@
                                 var tr = d3.select(this);
                                 var titleCell = tr.append('td');
                                 var valueCell = tr.append('td');
-                                titleCell.html(item.title + ':').style({
-                                    'text-align': 'right',
-                                    'color': 'rgb(220,200,120)'
-                                });
-                                valueCell.html(item.value).style({
-                                    'padding': '1px 2px 1px 10px',
-                                    'color': 'rgb(234, 224, 184)'
-                                });
+                                titleCell.html(item.title + ':').style(_theme.item_title);
+                                valueCell.html(item.value).style(_theme.item_value);
+
                             });
 
                     }
@@ -113,7 +190,7 @@
             for (var i = -1; i <= 1; i++) {
                 for (var j = -1; j <= 1; j++) {
                     var k = i + ":" + j;
-                    offsets[k] = {left: i * (xOff + shift) + 'px', top: j * (yOff + shift) + 'px'};
+                    offsets[k] = {left: i * (xOff + _shift) + 'px', top: j * (yOff + _shift) + 'px'};
                 }
             }
 
@@ -123,7 +200,7 @@
 
         var _updateMethod = function update(justRebuilt) {
 
-            if (!dispTipData) return;
+            if (!tipDisplayData) return;
 
             var pos = d3.mouse(bodyNode);
 
@@ -136,11 +213,26 @@
             var tw = tipSel.node().clientWidth;
             var th = tipSel.node().clientHeight;
 
-            var xk = (x < tw * .5 + shift) ? 1 : ((x > bw - tw * .5 - shift) ? -1 : 0);
-            var yk = (y < th * .5 + shift) ? 1 : ((y > bh - th * .5 - shift) ? -1 : 0);
+            var bestKey = null;
+            var bestDiff = 5;
 
-            if (xk === 0 && yk === 0)
-                yk = -1;
+            var xkMax = (x > bw - tw) ? -1 : (x > bw - tw - _shift * 2 ? 0 : 1);
+            var ykMax = (y > bh - th) ? -1 : (y > bh - th - _shift * 2 ? 0 : 1);
+            var xkMin = (x < tw) ? 1 : (x < tw + _shift * 2 ? 0 : -1);
+            var ykMin = (y < th) ? 1 : (y < th + _shift * 2 ? 0 : -1);
+
+            for(var xk = xkMin; xk <= xkMax; xk++){
+                for(var yk = ykMin; yk <= ykMax; yk++){
+                    if(xk === 0 && yk === 0) continue;
+                    var diff = Math.abs(xk - _gravity[0]) + Math.abs(yk - _gravity[1]);
+                    if(diff < bestDiff) {
+                        bestKey = [xk, yk];
+                        bestDiff = diff;
+                    }
+                }
+            }
+
+            bestKey = bestKey || [0, 0];
 
             var left = x - tw / 2;
             var top = y - th / 2;
@@ -153,15 +245,11 @@
                 opacity: 1
             });
 
-            if(justRebuilt){
-                //baseSel.interrupt().transition();
-                //baseSel.style('visibility','hidden').transition().delay(300).style('visibility','visible');
-            }
+            var k = bestKey[0] + ':' + bestKey[1];
 
-            var k = xk + ":" + yk;
             var moved = Math.max(Math.abs(offsetSwitch[0] - x), Math.abs(offsetSwitch[1] - y));
 
-            if (justRebuilt || (k !== offsetKey && moved > shift * 2)) {
+            if (justRebuilt || (k !== offsetKey && moved > _shift)) {
 
                 offsetKey = k;
                 offsetSwitch = pos;
@@ -171,7 +259,6 @@
                 holderSel
                     .transition().ease('cubic-out').duration(250)
                     .style(offsetStyle);
-
             }
         };
 
@@ -179,20 +266,19 @@
         var _tooltip = function _tooltip(selection) {
 
             selection
-                .on('mouseover.tooltip', function (d, i) {
+                .on('mouseover.tooltip', function (d) {
 
-                    _tooltip.show(d, i);
+                    _tooltip.show(d);
 
-                    
                 })
                 .on('mousedown.tooltip', function () {
-                    rawTipData = null;
+                    lastSourceDataShown = null;
                     tipSel.transition().duration(500).style('opacity', 0);
 
                 })
                 .on('mouseup.tooltip', function () {
 
-                    rawTipData = null;
+                    lastSourceDataShown = null;
                     tipSel.transition().duration(500).style('opacity', 0);
 
                 })
@@ -201,47 +287,68 @@
 
                 })
                 .on('mouseout.tooltip', function () {
-                    rawTipData = null;
+                    lastSourceDataShown = null;
                     tipSel.transition().duration(500).style('opacity', 0);
 
                 });
 
         };
 
+        // deprecated
         _tooltip.attr = function (_x) {
             if (!arguments.length) return attrs;
             attrs = _x;
             return this;
         };
 
+        // deprecated
         _tooltip.style = _tooltip.css = function (_x) {
             if (!arguments.length) return styles;
             styles = _x;
             return this;
         };
 
-        _tooltip.prep = _tooltip.data = function (prepDataFunction) {
-            if (!arguments.length) return _prep;
-            _prep = d3.functor(prepDataFunction);
+        _tooltip.distance = function (distance) {
+            _distance = distance || 25;
             return this;
         };
 
-        _tooltip.show = function (d, i) {
+        _tooltip.gravity = function (direction) {
+            _gravityDirection = direction || defaultGravityDirection;
+            _gravity = resolveGravity(_gravityDirection);
+            return this;
+        };
 
-            // format and build if base data or prep function has changed
-            if(d !== rawTipData || _prep !== lastPrep) {
+        //_tooltip.source = function (sourceData) {
+        //    _sourceData = d3.functor(sourceData);
+        //    return this;
+        //};
 
-                lastPrep = _prep;
-                rawTipData = d;
-                dispTipData = _prep(rawTipData, i);
-                _buildMethod(dispTipData);
+        _tooltip.format =  _tooltip.prep = _tooltip.data = function(formatFunc) {
+            _formatFunc = formatFunc;
+            return this;
+        };
+
+        _tooltip.show = function(sourceData, formatFunc){
+
+            _sourceData = d3.functor(sourceData); // || _sourceData);
+            _formatFunc = formatFunc || _formatFunc;
+
+            var currSourceData = _sourceData();
+
+            if(currSourceData !== lastSourceDataShown || _formatFunc !== lastFormatFuncShown){
+
+                lastFormatFuncShown = _formatFunc;
+                lastSourceDataShown = currSourceData;
+
+                tipDisplayData = _formatFunc ? _formatFunc(currSourceData) : currSourceData;
+                _buildMethod();
 
             }
 
             _updateMethod();
 
         };
-
 
         return _tooltip;
 
@@ -251,13 +358,13 @@
 
 }));
 
-$.fn.kodama = $.fn.bamboo = $.fn.kodama || function(tooltipData){
+$.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(tooltipData){
 
     var self = this;
     d3.selectAll(self.toArray())
         .call(d3.kodama.tooltip()
-            .attr({class: 'katana_tooltip'})
-            .data(function(){ return tooltipData;}));
+            .show(tooltipData));
+    // .format(function(){ return tooltipData;}));
     return this;
 
 };
