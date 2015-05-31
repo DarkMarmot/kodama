@@ -186,8 +186,7 @@
                 .style('visibility','hidden')
                 .style('pointer-events','all')
                 .call(d3.kodama.tooltip()
-                        .prep(makeTipData)
-                        .attr({class: 'kodama_tooltip'}))
+                        .show(makeTipData))
                 .on('mouseover', function(d){
                     var node = d;
                     d3.select(this).style('fill-opacity',.85).style('fill', 'rgb(230,240,255)');
