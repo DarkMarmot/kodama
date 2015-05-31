@@ -267,9 +267,9 @@
         var _tooltip = function _tooltip(selection) {
 
             selection
-                .on('mouseover.tooltip', function (d) {
+                .on('mouseover.tooltip', function (d, i) {
 
-                    _tooltip.show(d);
+                    _tooltip.show(d, i);
 
                 })
                 .on('mousedown.tooltip', function () {
