@@ -34,6 +34,7 @@
     if(d3.kodama) return d3.kodama;
 
     var kodama = {};
+    var validOptions = ['gravity','theme','distance','style'];
 
     var bodyNode = d3.select('body').node();
 
@@ -148,6 +149,7 @@
     // returns a function/object with a config api and accepting a d3 selection to wire handlers
     kodama.tooltip = function() {
 
+        var _options = undefined;
         var _sourceKey = undefined;
         var _sourceData = undefined;
         var _formatFunc = null;
@@ -342,6 +344,19 @@
         //    return this;
         //};
 
+        _tooltip.options = function(options) {
+
+            if(arguments.length === 0) return _options;
+            if(typeof options !== 'object') return this;
+
+            for(var prop in options){
+                if(validOptions.indexOf(prop)===-1) continue;
+                _tooltip[prop](options[prop]);
+            }
+            _options = options;
+            return this;
+        };
+
         _tooltip.format =  _tooltip.prep = _tooltip.data = function(formatFunc) {
             _formatFunc = formatFunc;
             return this;
@@ -374,12 +389,12 @@
 
 }));
 
-$.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(tooltipData){
+$.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(tooltipData, options){
 
     var self = this;
     var els = self.toArray();
     var arr = d3.range(els.length).map(function(){return tooltipData;});
-    d3.selectAll(els).data(arr).call(d3.kodama.tooltip());
+    d3.selectAll(els).data(arr).call(d3.kodama.tooltip().options(options));
 
     return this;
 
