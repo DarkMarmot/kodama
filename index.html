@@ -27,18 +27,12 @@
 
 <section class="main-content">
     <div style="position: absolute;width: 100%;height:2px; */display: flex;left: 0;">
-        <img src="assets/crossguy.png" width="141" height="241" class="left_guy" style="
+        <img id="crossguy" src="assets/crossguy.png" width="141" height="241" class="left_guy" style="
     position: absolute;
                                                                                 top: -17.5rem;
 
 ">
-
-        <img src="assets/kneeguy.png" class="right_guy" width="152" height="211" style="
-    position: absolute;
-   top: -13.8rem;
-
-">
-
+        <img id="kneeguy" src="assets/kneeguy.png" class="right_guy" width="152" height="211" style="position: absolute;top: -13.8rem;">
     </div>
     <h3>
         <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tooltips for D3 Data Visualizations.</h3>
@@ -88,6 +82,11 @@
 <script>
 
     $(function(){
+
+
+        $('#crossguy').kodama_tooltip({
+            title: 'This tooltip was invoked via jQuery'
+        });
 
         var svg = d3.select('#svg_demo');
 
