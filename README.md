@@ -38,8 +38,10 @@ There are 4 general ways to invoke the Kodama tooltip.
     ```
 4. A jQuery selection configured with a tooltip data object and an optional options object.
     ```javascript
+    
       jquery_selection
         .kodama_tooltip(tooltip_data_object, tooltip_config_options);
+        
     ```
 
 ## Examples
