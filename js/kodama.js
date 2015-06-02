@@ -1,5 +1,5 @@
 /**
- * kodama.js (v1.0.1)
+ * kodama.js (v1.0.2)
  *
  * Copyright (c) 2015 Scott Southworth & Contributors
  *
@@ -389,12 +389,12 @@
 
 }));
 
-$.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(tooltipData, options){
+$.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(tooltipData, tooltipOptions){
 
     var self = this;
     var els = self.toArray();
     var arr = d3.range(els.length).map(function(){return tooltipData;});
-    d3.selectAll(els).data(arr).call(d3.kodama.tooltip().options(options));
+    d3.selectAll(els).data(arr).call(d3.kodama.tooltip().options(tooltipOptions));
 
     return this;
 
