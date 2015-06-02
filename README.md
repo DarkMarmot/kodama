@@ -15,27 +15,27 @@ The Kodama tooltip is a single shared instance that moves with the mouse, automa
 There are 4 general ways to invoke the Kodama tooltip.
 
 1. The D3 selection data IS composed of tooltip data objects
-```javascript
-  d3_enter_selection
-    .call(d3.kodama.tooltip()); // if the data IS the tooltip display data
-```
+    ```javascript
+      d3_enter_selection
+        .call(d3.kodama.tooltip()); // if the data IS the tooltip display data
+    ```
 2. The D3 selection data will be TRANSFORMED into tooltip data objects with a format function
-```javascript
-  d3_enter_selection
-    .call(d3.kodama.tooltip().format(formatFunc));
-```
+    ```javascript
+      d3_enter_selection
+        .call(d3.kodama.tooltip().format(formatFunc));
+    ```
 3. The D3 selection will update the tooltip data object on an event
-```
-  d3_enter_selection
-    .on('mousemove', function(d, i){
-      d3.kodama.format(formatFunc).show(d, i);
-    });
-```
+    ```
+      d3_enter_selection
+        .on('mousemove', function(d, i){
+          d3.kodama.format(formatFunc).show(d, i);
+        });
+    ```
 4. A jQuery selection configured with a tooltip data object and an optional options object.
-```javascript
-  jquery_selection
-    .kodama_tooltip(tooltip_data_object, tooltip_config_options);
-```
+    ```javascript
+      jquery_selection
+        .kodama_tooltip(tooltip_data_object, tooltip_config_options);
+    ```
 
 ## Examples
 
