@@ -16,8 +16,10 @@ There are 4 general ways to invoke the Kodama tooltip.
 
 1. The D3 selection data IS composed of tooltip data objects
     ```javascript
+    
       d3_enter_selection
         .call(d3.kodama.tooltip()); // if the data IS the tooltip display data
+        
     ```
 2. The D3 selection data will be TRANSFORMED into tooltip data objects with a format function
     ```javascript
