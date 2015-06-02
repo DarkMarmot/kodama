@@ -153,10 +153,10 @@
         var _sourceKey = undefined;
         var _sourceData = undefined;
         var _formatFunc = null;
+        var _distance = defaultDistance;
         var _gravityDirection = defaultGravityDirection;
         var _gravity = defaultGravity;
         var _theme = defaultTheme;
-        var _shift = defaultDistance;
 
         var attrs = {};
         var styles = {};
@@ -210,7 +210,7 @@
             for (var i = -1; i <= 1; i++) {
                 for (var j = -1; j <= 1; j++) {
                     var k = i + ":" + j;
-                    offsets[k] = {left: i * (xOff + _shift) + 'px', top: j * (yOff + _shift) + 'px'};
+                    offsets[k] = {left: i * (xOff + _distance) + 'px', top: j * (yOff + _distance) + 'px'};
                 }
             }
 
@@ -236,10 +236,10 @@
             var bestKey = null;
             var bestDiff = 5;
 
-            var xkMax = (x > bw - tw) ? -1 : (x > bw - tw - _shift * 2 ? 0 : 1);
-            var ykMax = (y > bh - th) ? -1 : (y > bh - th - _shift * 2 ? 0 : 1);
-            var xkMin = (x < tw) ? 1 : (x < tw + _shift * 2 ? 0 : -1);
-            var ykMin = (y < th) ? 1 : (y < th + _shift * 2 ? 0 : -1);
+            var xkMax = (x > bw - tw) ? -1 : (x > bw - tw - _distance * 2 ? 0 : 1);
+            var ykMax = (y > bh - th) ? -1 : (y > bh - th - _distance * 2 ? 0 : 1);
+            var xkMin = (x < tw) ? 1 : (x < tw + _distance * 2 ? 0 : -1);
+            var ykMin = (y < th) ? 1 : (y < th + _distance * 2 ? 0 : -1);
 
             for(var xk = xkMin; xk <= xkMax; xk++){
                 for(var yk = ykMin; yk <= ykMax; yk++){
@@ -269,7 +269,7 @@
 
             var moved = Math.max(Math.abs(offsetSwitch[0] - x), Math.abs(offsetSwitch[1] - y));
 
-            if (justRebuilt || (k !== offsetKey && moved > _shift)) {
+            if (justRebuilt || (k !== offsetKey && moved > _distance)) {
 
                 offsetKey = k;
                 offsetSwitch = pos;
