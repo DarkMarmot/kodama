@@ -46,7 +46,7 @@ There are 4 general ways to invoke the Kodama tooltip.
     ```javascript
     
       jquery_selection
-        .kodama_tooltip(tooltip_data_object, tooltip_config_options);
+        .kodama_tooltip(tooltip_data_object, tooltip_options_object);
         
     ```
     
@@ -67,6 +67,25 @@ The data used to generate a tooltip should use this format:
     }
 
 ```
+
+(note: all properties are optional)
+
+## Tooltip Options Object
+
+The options object used to configure a tooltip's behaviors and styles (via the options method or the jQuery plugin) should use this format:
+
+```javascript
+
+    {
+        theme: 'white_wolf',
+        distance: 40,
+        gravity: 'northeast',
+        format: blood_function
+    }
+
+```
+
+(note: all properties are optional)
 
 ## Examples
 
