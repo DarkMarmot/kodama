@@ -10,7 +10,7 @@ I had two primary motivations for writing this library. First, I had a data visu
 
 ## Basic Usage
 
-The Kodama tooltip is a single shared instance that moves with the mouse, automatically positioning itself to stay on the screen. The contents of the tooltip are generated with the use of an options object.
+The Kodama tooltip is a single shared instance that moves with the mouse, automatically positioning itself to stay on the screen. The contents of the tooltip are generated with the use of a 'tooltip data object' defined below.
 
 There are 4 general ways to invoke the Kodama tooltip.
 
@@ -45,6 +45,23 @@ There are 4 general ways to invoke the Kodama tooltip.
         .kodama_tooltip(tooltip_data_object, tooltip_config_options);
         
     ```
+## Tooltip Data Object
+
+The data used to generate a tooltip should use this format:
+
+```javascript
+
+    {
+        title: 'Kodama Tooltip',
+        items: [
+            {title: 'Extends', value: 'D3.js'},
+            {title: 'Western Archetype', value: 'Dryad'},
+            {title: 'Anime Source', value: 'Princess Mononoke'}
+        ]
+        
+    }
+
+```
 
 ## Examples
 
