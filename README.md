@@ -1,8 +1,5 @@
 # Kodama -- D3 Tooltip
 
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][downloads-url]
-  
 Kodama is a D3-based tooltip system designed to be simple, fast and small with a fluent API. It can be styled without CSS classes (which I view as terribly heretical global variables for any large, modular application). And it can support a preferred directional 'gravity' that will adjust itself so as to stay on the screen.
 
 It can be used across an entire site for consistency, but integrates canonically with D3's API. If using jQuery in addition to D3, you can include a tiny plugin to add tooltips to any jQuery selection. 
