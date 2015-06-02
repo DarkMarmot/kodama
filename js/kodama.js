@@ -385,17 +385,20 @@
 
     };
 
+    var selector = typeof jQuery !== 'undefined' && jQuery !== null ? jQuery : null;
+    selector = selector || (typeof Zepto !== 'undefined' && Zepto !== null ? Zepto : null);
+    if(selector) {
+        selector.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(tooltipData, tooltipOptions){
+
+            var self = this;
+            var els = self.toArray();
+            var arr = d3.range(els.length).map(function(){return tooltipData;});
+            d3.selectAll(els).data(arr).call(d3.kodama.tooltip().options(tooltipOptions));
+
+            return this;
+
+        };
+    }
     return kodama;
 
 }));
-
-$.fn.kodama = $.fn.kodama_tooltip = $.fn.bamboo = $.fn.kodama || function(tooltipData, tooltipOptions){
-
-    var self = this;
-    var els = self.toArray();
-    var arr = d3.range(els.length).map(function(){return tooltipData;});
-    d3.selectAll(els).data(arr).call(d3.kodama.tooltip().options(tooltipOptions));
-
-    return this;
-
-};
