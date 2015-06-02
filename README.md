@@ -30,11 +30,13 @@ There are 4 general ways to invoke the Kodama tooltip.
     ```
 3. The D3 selection will update the tooltip data object on an event
     ```
+    
       d3_enter_selection
         .on('mousemove', function(d, i){
             var subData = getDataAtPosition(d3.mouse(this));
             d3.kodama.format(formatFunc).show(subData); // e.g., for updating values while moving across a graph
         });
+        
     ```
 4. A jQuery selection configured with a tooltip data object and an optional options object.
     ```javascript
