@@ -22,14 +22,16 @@ There are 4 general ways to invoke the Kodama tooltip.
     ```javascript
     
       d3_enter_selection
-        .call(d3.kodama.tooltip()); // the tooltips ARE the data
+        .call(d3.kodama.tooltip()); 
+        // the tooltips ARE the data
         
     ```
 2. The D3 selection data will be TRANSFORMED into tooltip data objects with a format function
     ```javascript
     
       d3_enter_selection 
-        .call(d3.kodama.tooltip().format(formatFunc)); // this is the common use case -- tooltips FROM data
+        .call(d3.kodama.tooltip().format(formatFunc)); 
+        // this is the common use case -- tooltips FROM data
         
     ```
 3. The D3 selection will update the tooltip data object on an event
@@ -38,8 +40,9 @@ There are 4 general ways to invoke the Kodama tooltip.
       d3_enter_selection
         .on('mousemove', function(d, i){
             var subData = getDataAtPosition(d3.mouse(this));
-            d3.kodama.format(formatFunc).show(subData); // e.g., updating values while moving across a graph
+            d3.kodama.format(formatFunc).show(subData); 
         });
+        // e.g., updating values while moving across a graph
         
     ```
 4. A jQuery selection configured with a tooltip data object and an optional options object.
@@ -47,6 +50,7 @@ There are 4 general ways to invoke the Kodama tooltip.
     
       jquery_selection
         .kodama_tooltip(tooltip_data_object, tooltip_options_object);
+        // the options object is optional (will use global library settings)
         
     ```
     
