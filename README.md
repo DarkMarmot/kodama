@@ -38,7 +38,7 @@ There are 4 general ways to invoke the Kodama tooltip.
       d3_enter_selection
         .on('mousemove', function(d, i){
             var subData = getDataAtPosition(d3.mouse(this));
-            d3.kodama.format(formatFunc).show(subData); // e.g., for updating values while moving across a graph
+            d3.kodama.format(formatFunc).show(subData); // e.g., updating values while moving across a graph
         });
         
     ```
@@ -115,7 +115,7 @@ Methods invoked on the d3.kodama.tooltip() instance can be chained when used as 
 |theme | name: string | Sets the theme for this tooltip. Note: this theme name must be present in the global themeRegistry. |
 |format | callback(data, key): function | Sets the default format function for the tooltip. It takes the current data as an argument and returns a formatted object representing the tooltip display (see Tooltip Data Object). |
 |show | data, key | Manually activates the tooltip using a formatter function if applied. This method is called automatically behind the scenes if the tooltip has been associated with a D3 selection using the 'call' method. |
-|options | object | |
+|options | options: object | Sets multiple configuration options at once based on a Tooltip Options Object. |
 
 
 
