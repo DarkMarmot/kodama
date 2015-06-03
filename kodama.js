@@ -114,7 +114,6 @@
             'font-size': '12px',
             'box-shadow': '0px 1px 3px rgba(0,20,40,.5)'
         },
-        pane: {},
         title: {'text-align': 'center', 'padding': '4px'},
         item_title: {'text-align': 'right', 'color': 'rgb(220,200,120)'},
         item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(234, 224, 184)'}
@@ -179,7 +178,6 @@
                         sel
                             .append('div')
                             .style(_theme.title)
-                            .append('span')
                             .html(d.title);
                     }
 
