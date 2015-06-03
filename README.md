@@ -45,11 +45,11 @@ There are 4 general ways to invoke the Kodama tooltip.
         // e.g., updating values while moving across a graph
         
     ```
-4. A jQuery selection configured with a tooltip data object and an optional options object.
+4. A jQuery selection configured with a tooltip data object.
     ```javascript
     
       jquery_selection
-        .kodama_tooltip(tooltip_data_object, tooltip_options_object);
+        .kodama_tooltip(tooltip_data_object);
         // the options object is optional (will use global library settings)
         
     ```
@@ -66,30 +66,15 @@ The data used to generate a tooltip should use this format:
             {title: 'Extends', value: 'D3.js'},
             {title: 'Western Archetype', value: 'Dryad'},
             {title: 'Anime Source', value: 'Princess Mononoke'}
-        ]
-        
-    }
-
-```
-
-(note: all properties are optional)
-
-## Tooltip Options Object
-
-The options object used to configure a tooltip's behaviors and styles (via the options method or the jQuery plugin) should use this format:
-
-```javascript
-
-    {
+        ],
         theme: 'white_wolf',
         distance: 40,
-        gravity: 'northeast',
-        format: blood_function
+        gravity: 'northeast'
     }
 
 ```
 
-(note: all properties are optional)
+(note: all properties are optional -- but a title and/or items are core)
 
 ## Examples
 
@@ -119,7 +104,7 @@ Methods invoked on the d3.kodama.tooltip() instance can be chained when used as 
 |theme | name: string | Sets the theme for this tooltip. Note: this theme name must be present in the global themeRegistry. |
 |format | callback(data, key): function | Sets the default format function for the tooltip. It takes the current data as an argument and returns a formatted object representing the tooltip display (see Tooltip Data Object). |
 |show | data, key | Manually activates the tooltip using a formatter function if applied. This method is called automatically behind the scenes if the tooltip has been associated with a D3 selection using the 'call' method. |
-|options | options: object | Sets multiple configuration options at once based on a Tooltip Options Object. |
+|options | options: object | Sets multiple default configuration options at once. |
 
 
 
