@@ -76,6 +76,39 @@ The data used to generate a tooltip should use this format:
 
 (note: all properties are optional -- but a title and/or items are core)
 
+## Tooltip Themes
+
+Themes are Javascript objects that apply inline CSS styles to parts of the tooltip.
+Themes can be registered globally with the ```themeRegistry``` method. 
+
+The tooltip itself has an template HTML as below and where the names correspond to the inline styles applied:
+
+```html
+
+    <div name="frame">
+        <div name="title">
+        <table>
+            <tr>
+                <td name="item_title" />
+                <td name="item_value" />
+            </tr>
+            <tr>
+                <td name="item_title" />
+                <td name="item_value" />
+            </tr>
+        </table>
+    </div>
+
+```
+
+The default style, registered as the name 'kodama', looks like:
+
+```javascript
+
+
+```
+
+
 ## Examples
 
 
