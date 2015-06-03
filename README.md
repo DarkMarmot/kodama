@@ -2,7 +2,7 @@
 
 Kodama is a D3-based tooltip system designed to be simple, fast and small with a fluent API. It can be styled without CSS classes (which I view as terribly heretical global variables for any large, modular application). And it can support a preferred directional 'gravity' that will adjust itself so as to stay on the screen.
 
-It can be used across an entire site for consistency, but integrates canonically with D3's API. If using jQuery in addition to D3, you can include a tiny plugin to add tooltips to any jQuery selection. 
+It can be used across an entire site for consistency, but integrates canonically with D3's API. If using jQuery in addition to D3, the library installs a tiny plugin to add tooltips to any jQuery selection (if it finds jQuery or Zepto when initialized). 
 
 I had two primary motivations for writing this library. First, I had a data visualization application whose highest hit on the CPU profiler was Bootstrap's Popover. Thus, I really wanted to replace Boostrap. Second, I thought making a tooltip based on D3 would be kind of fun.
 
@@ -50,7 +50,6 @@ There are 4 general ways to invoke the Kodama tooltip.
     
       jquery_selection
         .kodama_tooltip(tooltip_data_object);
-        // the options object is optional (will use global library settings)
         
     ```
     
@@ -81,7 +80,7 @@ The data used to generate a tooltip should use this format:
 Themes are Javascript objects that apply inline CSS styles to parts of the tooltip.
 Themes can be registered globally with the ```themeRegistry``` method. 
 
-The tooltip itself has an template HTML as below and where the names correspond to the inline styles applied:
+The tooltip itself has an HTML template where the names below correspond to the inline styles applied:
 
 ```html
 
@@ -105,6 +104,24 @@ The default style, registered as the name 'kodama', looks like:
 
 ```javascript
 
+    var defaultThemeConfig = 
+    {
+        frame: {
+            padding: '4px',
+            background: 'linear-gradient(to top, rgb(16, 74, 105) 0%, rgb(14, 96, 125) 90%)',
+            'font-family': '"Helvetica Neue", Helvetica, Arial, sans-serif',
+            'border': '1px solid rgb(57, 208, 204)',
+            color: 'rgb(245,240,220)',
+            'border-radius': '4px',
+            'font-size': '12px',
+            'box-shadow': '0px 1px 3px rgba(0,20,40,.5)'
+        },
+        title: {'text-align': 'center', 'padding': '4px'},
+        item_title: {'text-align': 'right', 'color': 'rgb(220,200,120)'},
+        item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(234, 224, 184)'}
+    };
+    
+    d3.kodama.themeRegistry('kodama', defaultThemeConfig);
 
 ```
 
