@@ -12,7 +12,7 @@
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  *
- * @authors Scott Southworth @DarkMarmot
+ * @authors Scott Southworth @DarkMarmot scott.southworth@gmail.com
  *
  */
 
