@@ -1,5 +1,5 @@
 /**
- * kodama.js (v1.0.2)
+ * kodama.js (v1.0.3)
  *
  * Copyright (c) 2015 Scott Southworth & Contributors
  *
@@ -12,7 +12,7 @@
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  *
- * @authors Scott Southworth @DarkMarmot
+ * @authors Scott Southworth @DarkMarmot scott.southworth@gmail.com
  *
  */
 
