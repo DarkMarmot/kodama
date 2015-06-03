@@ -129,6 +129,7 @@ The default style, registered as the name 'kodama', looks like:
 ## Examples
 
 Examples and demos can be found at [the github.io page](http://darkmarmot.github.io/kodama/ "Kodama Tooltip Demos").
+Note: The demo page is still VERY MUCH under construction. Expect 3 or 4 more examples in the next few weeks.
 
 ## API Documentation
 
