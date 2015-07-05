@@ -155,15 +155,15 @@ Methods invoked on the d3.kodama.tooltip() instance can be chained when used as 
 
 |Name | Parameters | Description |
 |-----|------------------------|-------------|
-|holdDuration | duration: number | Sets the default duration in milliseconds to activate a tooltip by holding the mouse still above a target.|
-|fadeInDuration | duration: number | Sets the default duration in milliseconds for a tooltip to fade-in. |
-|fadeOutDuration | duration: number | Sets the default duration in milliseconds for a tooltip to fade-out. |
+|holdDuration | duration: number | Sets the duration in milliseconds to activate this tooltip by holding the mouse still above a target.|
+|fadeInDuration | duration: number | Sets the duration in milliseconds for this tooltip to fade-in. |
+|fadeOutDuration | duration: number | Sets the duration in milliseconds for this tooltip to fade-out. |
 |gravity | direction: string (any cardinal direction or css placement such as north, southwest, top, left, upper-right, etc.) | Sets a favored default direction (floating away from the mouse) for this tooltip | 
-|distance | distance: number | Sets the default pixel distance between this tooltip box and the mouse pointer. |
+|distance | distance: number | Sets the pixel distance between this tooltip and the mouse pointer. |
 |theme | name: string | Sets the theme for this tooltip. Note: this theme name must be present in the global themeRegistry. |
-|format | callback(data, key): function | Sets the default format function for the tooltip. It takes the current data as an argument and returns a formatted object representing the tooltip display (see Tooltip Data Object). |
-|show | data, key | Manually activates the tooltip using a formatter function if applied. This method is called automatically behind the scenes if the tooltip has been associated with a D3 selection using the 'call' method. |
-|options | options: object | Sets multiple default configuration options at once. |
+|format | callback(data, key): function | Sets the format function for this tooltip. It takes the current data as an argument and returns a formatted object representing the tooltip display (see Tooltip Data Object). |
+|show | data, key | Manually activates this tooltip using a formatter function if applied. This method is called automatically behind the scenes if the tooltip has been associated with a D3 selection using the 'call' method. |
+|options | options: object | Sets multiple configuration options at once. |
 
 
 
