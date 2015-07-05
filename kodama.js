@@ -1,5 +1,5 @@
 /**
- * kodama.js (v1.0.4)
+ * kodama.js (v1.1.0)
  *
  * Copyright (c) 2015 Scott Southworth & Contributors
  *
