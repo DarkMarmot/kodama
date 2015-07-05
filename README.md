@@ -155,9 +155,9 @@ Methods invoked on the d3.kodama.tooltip() instance can be chained when used as 
 
 |Name | Parameters | Description |
 |-----|------------------------|-------------|
-|holdDuration | duration: number | Sets the default duration in milliseconds to activate a tooltip by holding the mouse still above a target. Original default is 0 (instant). |
-|fadeInDuration | duration: number | Sets the default duration in milliseconds for a tooltip to fade-in. Original default is 0 (instant). |
-|fadeOutDuration | duration: number | Sets the default duration in milliseconds for a tooltip to fade-out. Original default is 500. |
+|holdDuration | duration: number | Sets the default duration in milliseconds to activate a tooltip by holding the mouse still above a target.|
+|fadeInDuration | duration: number | Sets the default duration in milliseconds for a tooltip to fade-in. |
+|fadeOutDuration | duration: number | Sets the default duration in milliseconds for a tooltip to fade-out. |
 |gravity | direction: string (any cardinal direction or css placement such as north, southwest, top, left, upper-right, etc.) | Sets a favored default direction (floating away from the mouse) for this tooltip | 
 |distance | distance: number | Sets the default pixel distance between this tooltip box and the mouse pointer. |
 |theme | name: string | Sets the theme for this tooltip. Note: this theme name must be present in the global themeRegistry. |
