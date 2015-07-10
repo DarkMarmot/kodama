@@ -1,5 +1,5 @@
 /**
- * kodama.js (v1.0.3)
+ * kodama.js (v1.1.1)
  *
  * Copyright (c) 2015 Scott Southworth & Contributors
  *
@@ -34,7 +34,9 @@
     if(d3.kodama) return d3.kodama;
 
     var kodama = {};
-    var validOptions = ['gravity','theme','distance','style'];
+
+    var validOptions = ['gravity','theme','distance','style',
+        'fadeInDuration', 'fadeOutDuration', 'holdDuration'];
 
     var bodyNode = d3.select('body').node();
 
@@ -44,6 +46,7 @@
         .style('position', 'absolute')
         .style('left', 0)
         .style('top', 0)
+        .style('visibility', 'hidden')
         .attr('name', 'kodama');
 
     // handles mouse position placement and fade out transitions
@@ -56,6 +59,7 @@
     // handles screen gravity offset placement and transitions
     var holderSel = tipSel.append('div').style('position', 'relative');
 
+    var fadingState = "none";
 
     var gravityDefs = {
 
@@ -95,9 +99,14 @@
     var offsetKey = "0:0";
     var tipDisplayData = null;
 
+    var activated = false; // to display after delay
+
     var lastSourceDataShown;
     var lastFormatFuncShown;
 
+    var defaultHoldDuration = 0;
+    var defaultFadeInDuration = 0;
+    var defaultFadeOutDuration = 500;
     var defaultThemeName = 'kodama_small';
     var defaultGravityDirection = 'top';
     var defaultGravity = resolveGravity(defaultGravityDirection);
@@ -118,6 +127,24 @@
         title: {'text-align': 'center', 'padding': '4px'},
         item_title: {'text-align': 'right', 'color': 'rgb(220,200,120)'},
         item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(234, 224, 184)'}
+    };
+
+    kodama.holdDuration = function(duration){
+        if(arguments.length === 0) return defaultHoldDuration;
+        defaultHoldDuration = duration;
+        return kodama;
+    };
+
+    kodama.fadeInDuration = function(duration){
+        if(arguments.length === 0) return defaultFadeInDuration;
+        defaultFadeInDuration = duration;
+        return kodama;
+    };
+
+    kodama.fadeOutDuration = function(duration){
+        if(arguments.length === 0) return defaultFadeOutDuration;
+        defaultFadeOutDuration = duration;
+        return kodama;
     };
 
     kodama.distance = function(distance){
@@ -157,13 +184,42 @@
         var _gravityDirection = defaultGravityDirection;
         var _gravity = defaultGravity;
         var _theme = defaultTheme;
+        var _holdDuration = defaultHoldDuration;
+        var _fadeInDuration = defaultFadeInDuration;
+        var _fadeOutDuration = defaultFadeOutDuration;
 
         var attrs = {};
         var styles = {};
 
-        var _buildMethod = function build() {
+        var _tooltip = function _tooltip(selection) {
 
-            if (!tipDisplayData) return;
+            selection
+                .on('mouseover.tooltip', function (d, i) {
+                    _tooltip.show(d, i);
+                })
+                .on('mousedown.tooltip', function () {
+                    _tooltip.show(null)
+                })
+                .on('mouseup.tooltip', function () {
+                    _tooltip.show(null)
+                })
+                .on('mousemove.tooltip', function () {
+                    _tooltip._update();
+                })
+                .on('mouseout.tooltip', function () {
+                    _tooltip.show(null)
+                });
+
+        };
+
+        _tooltip._build = function _build() {
+
+            if (!tipDisplayData) {
+                _tooltip.fadeOut();
+                return;
+            } else {
+                _tooltip.activateAfter(_holdDuration);
+            }
 
             holderSel.selectAll('*').remove();
 
@@ -214,11 +270,11 @@
                 }
             }
 
-            _updateMethod(true);
+            _tooltip._update(true);
 
         };
 
-        var _updateMethod = function update(justRebuilt) {
+        _tooltip._update = function _update(justRebuilt) {
 
             if (!tipDisplayData) return;
 
@@ -257,12 +313,9 @@
             var left = x - tw / 2;
             var top = y - th / 2;
 
-            tipSel.interrupt().transition();
-
             tipSel.style({
                 left: left + 'px',
-                top: top + 'px',
-                opacity: 1
+                top: top + 'px'
             });
 
             var k = bestKey[0] + ':' + bestKey[1];
@@ -282,38 +335,6 @@
             }
         };
 
-
-        var _tooltip = function _tooltip(selection) {
-
-            selection
-                .on('mouseover.tooltip', function (d, i) {
-
-                    _tooltip.show(d, i);
-
-                })
-                .on('mousedown.tooltip', function () {
-                    lastSourceDataShown = null;
-                    tipSel.transition().duration(500).style('opacity', 0);
-
-                })
-                .on('mouseup.tooltip', function () {
-
-                    lastSourceDataShown = null;
-                    tipSel.transition().duration(500).style('opacity', 0);
-
-                })
-                .on('mousemove.tooltip', function () {
-                    _updateMethod();
-
-                })
-                .on('mouseout.tooltip', function () {
-                    lastSourceDataShown = null;
-                    tipSel.transition().duration(500).style('opacity', 0);
-
-                });
-
-        };
-
         // deprecated
         _tooltip.attr = function (_x) {
             if (!arguments.length) return attrs;
@@ -328,8 +349,83 @@
             return this;
         };
 
+
+        _tooltip.fadeIn = function(){
+
+            if(fadingState === 'in') {
+                return;
+            }
+
+            fadingState = 'in';
+            var progress = tipSel.style('opacity') / 1.0;
+            var duration = (1.0 - progress) * _fadeInDuration;
+            tipSel.interrupt().transition().duration(duration).style('opacity', 1);
+
+        };
+
+        _tooltip.fadeOut = function(){
+
+            if(fadingState === 'out') {
+                return;
+            }
+
+            fadingState = 'out';
+            var progress = tipSel.style('opacity') / 1.0;
+            var duration = progress * _fadeOutDuration;
+            tipSel.transition().delay(50).duration(duration).style('opacity', 0);
+
+        };
+
+        _tooltip.activate = function(){
+
+            activated = true;
+            _tooltip.fadeIn();
+
+        };
+
+        _tooltip.deactivate = function(){
+
+            lastSourceDataShown = null;
+            activated = false;
+            _tooltip.fadeOut();
+
+        };
+
+        _tooltip.activateAfter = function(){
+
+            baseSel.interrupt().transition();
+
+            if(!activated) {
+
+                baseSel.transition()
+                    .delay(_holdDuration)
+                    .duration(0)
+                    .each('start', _tooltip.activate)
+                    .style('visibility','visible');
+
+            } else {
+                _tooltip.fadeIn();
+            }
+
+        };
+
+        _tooltip.holdDuration = function(duration){
+            _holdDuration = duration || defaultHoldDuration;
+            return this;
+        };
+
+        _tooltip.fadeInDuration = function(duration){
+            _fadeInDuration = duration || defaultFadeInDuration;
+            return this;
+        };
+
+        _tooltip.fadeOutDuration = function(duration){
+            _fadeOutDuration = duration || defaultFadeOutDuration;
+            return this;
+        };
+
         _tooltip.distance = function (distance) {
-            _distance = distance || 25;
+            _distance = distance || defaultDistance;
             return this;
         };
 
@@ -338,11 +434,6 @@
             _gravity = resolveGravity(_gravityDirection);
             return this;
         };
-
-        //_tooltip.source = function (sourceData) {
-        //    _sourceData = d3.functor(sourceData);
-        //    return this;
-        //};
 
         _tooltip.options = function(options) {
 
@@ -372,13 +463,14 @@
                 lastFormatFuncShown = _formatFunc;
                 lastSourceDataShown = _sourceData;
 
-                tipDisplayData = _formatFunc ? _formatFunc(_sourceData, _sourceKey) : _sourceData;
+                tipDisplayData = (_formatFunc && _sourceData) ? _formatFunc(_sourceData, _sourceKey) : _sourceData;
+
                 _tooltip.options(tipDisplayData);
-                _buildMethod();
+                _tooltip._build();
 
             }
 
-            _updateMethod();
+            _tooltip._update();
 
         };
 
