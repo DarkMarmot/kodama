@@ -1,5 +1,5 @@
 /**
- * kodama.js (v1.1.1)
+ * kodama.js (v1.1.2)
  *
  * Copyright (c) 2015 Scott Southworth & Contributors
  *
@@ -38,26 +38,13 @@
     var validOptions = ['gravity','theme','distance','style',
         'fadeInDuration', 'fadeOutDuration', 'holdDuration'];
 
-    var bodyNode = d3.select('body').node();
+    var initialized = false;
+    var bodyNode = null; //d3.select('body').node();
+    var baseSel = null;
+    var tipSel = null;
+    var holderSel = null;
 
-    // handles activity, delay into being transitions
-    var baseSel = d3.select(bodyNode)
-        .append('div')
-        .style('position', 'absolute')
-        .style('left', 0)
-        .style('top', 0)
-        .style('visibility', 'hidden')
-        .attr('name', 'kodama');
 
-    // handles mouse position placement and fade out transitions
-    var tipSel = baseSel
-        .append('div')
-        .attr('name', 'kodamaTip')
-        .style({'position': 'relative', 'pointer-events': 'none', 'z-index': 9999})
-        .style('opacity', 0);
-
-    // handles screen gravity offset placement and transitions
-    var holderSel = tipSel.append('div').style('position', 'relative');
 
     var fadingState = "none";
 
@@ -128,6 +115,40 @@
         item_title: {'text-align': 'right', 'color': 'rgb(220,200,120)'},
         item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(234, 224, 184)'}
     };
+
+    kodama.init = function(node){
+
+        bodyNode = node || document.body;
+
+        if(baseSel)
+            baseSel.remove();
+
+        // handles activity, delay into being transitions
+        baseSel = d3.select(bodyNode)
+            .append('div')
+            .style('position', 'absolute')
+            .style('left', 0)
+            .style('top', 0)
+            .style('visibility', 'hidden')
+            .attr('name', 'kodama');
+
+        // handles mouse position placement and fade out transitions
+        tipSel = baseSel
+            .append('div')
+            .attr('name', 'kodamaTip')
+            .style({'position': 'relative', 'pointer-events': 'none', 'z-index': 9999})
+            .style('opacity', 0);
+
+        // handles screen gravity offset placement and transitions
+        holderSel = tipSel.append('div').style('position', 'relative');
+
+    };
+
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', kodama.init);
+    } else {
+        kodama.init();
+    }
 
     kodama.holdDuration = function(duration){
         if(arguments.length === 0) return defaultHoldDuration;
