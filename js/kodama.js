@@ -145,7 +145,7 @@
     };
 
     if(document.readyState === 'loading'){
-        document.addEventListener('DOMContentLoaded', kodama.init);
+        document.addEventListener('DOMContentLoaded', function(){ kodama.init(); });
     } else {
         kodama.init();
     }
