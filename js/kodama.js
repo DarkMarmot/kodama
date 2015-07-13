@@ -1,5 +1,5 @@
 /**
- * kodama.js (v1.1.2)
+ * kodama.js (v1.4.0)
  *
  * Copyright (c) 2015 Scott Southworth & Contributors
  *
@@ -35,7 +35,7 @@
 
     var kodama = {};
 
-    var validOptions = ['gravity','theme','distance','style',
+    var validOptions = ['gravity','theme','distance','style','target','by',
         'fadeInDuration', 'fadeOutDuration', 'holdDuration'];
 
     var initialized = false;
@@ -43,7 +43,6 @@
     var baseSel = null;
     var tipSel = null;
     var holderSel = null;
-
 
 
     var fadingState = "none";
@@ -81,7 +80,7 @@
 
     var themesByName = {};
 
-    var offsets = {};
+
     var offsetSwitch = [0, 0];
     var offsetKey = "0:0";
     var tipDisplayData = null;
@@ -91,12 +90,15 @@
     var lastSourceDataShown;
     var lastFormatFuncShown;
 
+    var defaultTarget = null;
     var defaultHoldDuration = 0;
     var defaultFadeInDuration = 0;
     var defaultFadeOutDuration = 500;
     var defaultThemeName = 'kodama_small';
     var defaultGravityDirection = 'top';
+    var defaultByDirection = 'top';
     var defaultGravity = resolveGravity(defaultGravityDirection);
+    var defaultBy = resolveGravity(defaultByDirection);
     var defaultDistance = 25;
 
     var defaultTheme = themesByName[defaultThemeName] = {
@@ -194,9 +196,28 @@
         return kodama;
     };
 
+    kodama.themeRegistry('white_wolf', {
+        frame: {
+            padding: '5px',
+            background: 'linear-gradient(to top, rgba(220, 230, 240, .6) 0%, rgba(235, 240, 245, .9) 90%, rgba(230, 235, 240, .8) 100%)',
+            'font-family': '"Helvetica Neue", Helvetica, Arial, sans-serif',
+            'border': '1px solid rgb(220, 230, 250)',
+            'border-radius': '6px',
+            'font-size': '14px',
+
+            'box-shadow': '0px 1px 3px rgba(0,20,70,.5)'
+        },
+        pane: {},
+        title: {'text-align': 'center', 'padding': '4px', color: 'rgb(115,130,140)', 'font-size': '15px','text-shadow': '0 -1px 0 rgba(255,255,255,.5)'},
+        item_title: {'text-align': 'right', 'color': 'rgb(80,100,110)','font-size': '14px','text-shadow': '0 -1px 0 rgba(255,255,255,.5)'},
+        item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(90, 95, 85)','font-size': '14px','text-shadow': '0 -1px 0 rgba(255,255,255,.5)'}
+    });
+
+
     // returns a function/object with a config api and accepting a d3 selection to wire handlers
     kodama.tooltip = function() {
 
+        var _offsets = {};
         var _options = undefined;
         var _sourceKey = undefined;
         var _sourceData = undefined;
@@ -204,10 +225,13 @@
         var _distance = defaultDistance;
         var _gravityDirection = defaultGravityDirection;
         var _gravity = defaultGravity;
+        var _byDirection = defaultByDirection;
+        var _by = defaultBy;
         var _theme = defaultTheme;
         var _holdDuration = defaultHoldDuration;
         var _fadeInDuration = defaultFadeInDuration;
         var _fadeOutDuration = defaultFadeOutDuration;
+        var _target = defaultTarget;
 
         var attrs = {};
         var styles = {};
@@ -245,6 +269,7 @@
             holderSel.selectAll('*').remove();
 
             holderSel
+                .append('div')
                 .attr(attrs)
                 .style(_theme.frame)
                 .datum(tipDisplayData)
@@ -287,7 +312,7 @@
             for (var i = -1; i <= 1; i++) {
                 for (var j = -1; j <= 1; j++) {
                     var k = i + ":" + j;
-                    offsets[k] = {left: i * (xOff + _distance) + 'px', top: j * (yOff + _distance) + 'px'};
+                    _offsets[k] = {left: i * (xOff + _distance) + 'px', top: j * (yOff + _distance) + 'px'};
                 }
             }
 
@@ -299,7 +324,16 @@
 
             if (!tipDisplayData) return;
 
-            var pos = d3.mouse(bodyNode);
+            function getTargetPos(target, by){
+                if(!target) return d3.mouse(bodyNode);
+                var bounds = target.getBoundingClientRect();
+                var xOff = bounds.width / 2;
+                var yOff = bounds.height / 2;
+                return [bounds.left + (by[0] + 1) * xOff, bounds.top + (by[1] + 1) * yOff];
+            }
+
+            //var bounds = _target ? _target.getBoundingClientRect() : null;
+            var pos = getTargetPos(_target, _by); //bounds ? [bounds.left, bounds.top] : d3.mouse(bodyNode);
 
             var x = pos[0];
             var y = pos[1];
@@ -348,7 +382,7 @@
                 offsetKey = k;
                 offsetSwitch = pos;
 
-                var offsetStyle = offsets[k];
+                var offsetStyle = _offsets[k];
 
                 holderSel
                     .transition().ease('cubic-out').duration(250)
@@ -369,6 +403,7 @@
             styles = _x;
             return this;
         };
+
 
 
         _tooltip.fadeIn = function(){
@@ -430,6 +465,17 @@
 
         };
 
+        _tooltip.theme = function(name){
+            _theme = themesByName[name] || defaultTheme;
+            return this;
+        };
+
+        _tooltip.target = function(target){
+            var node = (target && target.length > 0) ? target[0] : target;
+            _target = node || defaultTarget;
+            return this;
+        };
+
         _tooltip.holdDuration = function(duration){
             _holdDuration = duration || defaultHoldDuration;
             return this;
@@ -456,10 +502,26 @@
             return this;
         };
 
+        _tooltip.by = function (direction) {
+            _byDirection = direction || defaultByDirection;
+            _by = resolveGravity(_byDirection);
+            return this;
+        };
+
         _tooltip.options = function(options) {
 
             if(arguments.length === 0) return _options;
-            if(typeof options !== 'object') return this;
+            if(!options) return this;
+
+            if(options.theme){ // if a theme is specified
+                _tooltip.theme(options.theme);
+                if(_theme.options){ // apply any options in the theme as defaults if not specified in the options argument
+                    for(var prop2 in _theme.options){
+                        if(!options.hasOwnProperty(prop2))
+                            options[prop2] = _theme.options[prop2];
+                    }
+                }
+            }
 
             for(var prop in options){
                 if(validOptions.indexOf(prop)===-1) continue;
@@ -467,6 +529,7 @@
             }
             _options = options;
             return this;
+
         };
 
         _tooltip.format =  _tooltip.prep = _tooltip.data = function(formatFunc) {
