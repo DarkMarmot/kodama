@@ -1,6 +1,6 @@
 # Kodama -- D3 Tooltip
 
-Kodama is a D3-based tooltip system designed to be simple, fast and small with a fluent API. Tooltips are evaluated in a lazy fashion, allowing thousands to potentially coexist (virtually) in the same context without suffering a performance hit. It can be styled without CSS classes and can support a preferred directional 'gravity' that will adjust itself so as to stay on the screen.
+Kodama is a D3-based tooltip system designed to be simple, fast and small with a fluent API. Tooltips are evaluated in a lazy fashion, allowing thousands to potentially coexist (virtually) in the same context without suffering a performance hit. It can be styled without CSS classes and can support a preferred directional 'gravity' that will adjust itself so as to stay on the screen. It will follow the mouse by default, but can be locked to float about a specific target node as well.
 
 It can be used across an entire site for consistency, but integrates canonically with D3's API. If using jQuery in addition to D3, the library installs a tiny plugin to add tooltips to any jQuery selection (if it finds jQuery or Zepto when initialized). 
 
@@ -127,6 +127,8 @@ The default style, registered as the name 'kodama', looks like:
     d3.kodama.themeRegistry('kodama', defaultThemeConfig);
 
 ```
+
+Note that the theme can include an 'options' object that will be applied as default settings for the theme, such as a preferred gravity, distance, etc.
 
 
 ## Examples
