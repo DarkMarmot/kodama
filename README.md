@@ -1,6 +1,6 @@
 # Kodama -- D3 Tooltip
 
-Kodama is a D3-based tooltip system designed to be simple, fast and small with a fluent API. Tooltips are evaluated in a lazy fashion, allowing thousands to potentially coexist (virtually) in the same context without suffering a performance hit. It can be styled without CSS classes (potentially global variables for any large, modular application). And it can support a preferred directional 'gravity' that will adjust itself so as to stay on the screen.
+Kodama is a D3-based tooltip system designed to be simple, fast and small with a fluent API. Tooltips are evaluated in a lazy fashion, allowing thousands to potentially coexist (virtually) in the same context without suffering a performance hit. It can be styled without CSS classes and can support a preferred directional 'gravity' that will adjust itself so as to stay on the screen.
 
 It can be used across an entire site for consistency, but integrates canonically with D3's API. If using jQuery in addition to D3, the library installs a tiny plugin to add tooltips to any jQuery selection (if it finds jQuery or Zepto when initialized). 
 
@@ -67,7 +67,9 @@ The data used to generate a tooltip should use this format:
         ],
         theme: 'white_wolf',
         distance: 40,
-        gravity: 'northeast'
+        gravity: 'northeast',
+        target: some_dom_node_or_selection,
+        by: 'top'
     }
 
 ```
@@ -119,6 +121,7 @@ The default style, registered as the name 'kodama', looks like:
         title: {'text-align': 'center', 'padding': '4px'},
         item_title: {'text-align': 'right', 'color': 'rgb(220,200,120)'},
         item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(234, 224, 184)'}
+        options: null
     };
     
     d3.kodama.themeRegistry('kodama', defaultThemeConfig);
@@ -155,6 +158,8 @@ Methods invoked on the d3.kodama.tooltip() instance can be chained when used as 
 
 |Name | Parameters | Description |
 |-----|------------------------|-------------|
+|target | target: node/selection | Locks the tooltip instance to float about the target element. Use 'by' to provide a relative position. |
+|by | direction: string  (any cardinal direction or css placement such as north, southwest, top, left, upper-right, etc.) | Set the relative position of the tooltip instance when used with a target element. Note that the gravity and distance modifiers still apply. |
 |holdDuration | duration: number | Sets the duration in milliseconds to activate this tooltip by holding the mouse still above a target.|
 |fadeInDuration | duration: number | Sets the duration in milliseconds for this tooltip to fade-in. |
 |fadeOutDuration | duration: number | Sets the duration in milliseconds for this tooltip to fade-out. |
