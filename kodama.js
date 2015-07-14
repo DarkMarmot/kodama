@@ -1,5 +1,5 @@
 /**
- * kodama.js (v1.4.0)
+ * kodama.js (v1.4.1)
  *
  * Copyright (c) 2015 Scott Southworth & Contributors
  *
@@ -94,7 +94,7 @@
     var defaultHoldDuration = 0;
     var defaultFadeInDuration = 0;
     var defaultFadeOutDuration = 500;
-    var defaultThemeName = 'kodama_small';
+    var defaultThemeName = 'kodama';
     var defaultGravityDirection = 'top';
     var defaultByDirection = 'top';
     var defaultGravity = resolveGravity(defaultGravityDirection);
@@ -112,7 +112,6 @@
             'font-size': '12px',
             'box-shadow': '0px 1px 3px rgba(0,20,40,.5)'
         },
-        pane: {},
         title: {'text-align': 'center', 'padding': '4px'},
         item_title: {'text-align': 'right', 'color': 'rgb(220,200,120)'},
         item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(234, 224, 184)'}
@@ -207,7 +206,6 @@
 
             'box-shadow': '0px 1px 3px rgba(0,20,70,.5)'
         },
-        pane: {},
         title: {'text-align': 'center', 'padding': '4px', color: 'rgb(115,130,140)', 'font-size': '15px','text-shadow': '0 -1px 0 rgba(255,255,255,.5)'},
         item_title: {'text-align': 'right', 'color': 'rgb(80,100,110)','font-size': '14px','text-shadow': '0 -1px 0 rgba(255,255,255,.5)'},
         item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(90, 95, 85)','font-size': '14px','text-shadow': '0 -1px 0 rgba(255,255,255,.5)'}
@@ -471,7 +469,10 @@
         };
 
         _tooltip.target = function(target){
-            var node = (target && target.length > 0) ? target[0] : target;
+            var node = target;
+            while(node && node.length > 0){
+                node = node[0];
+            }
             _target = node || defaultTarget;
             return this;
         };
