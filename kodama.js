@@ -1,5 +1,5 @@
 /**
- * kodama.js (v1.4.1)
+ * kodama.js (v1.4.2)
  *
  * Copyright (c) 2015 Scott Southworth & Contributors
  *
@@ -352,7 +352,7 @@
 
             for(var xk = xkMin; xk <= xkMax; xk++){
                 for(var yk = ykMin; yk <= ykMax; yk++){
-                    if(xk === 0 && yk === 0) continue;
+                    if(xk === 0 && yk === 0 && _gravity[0] !== 0 && _gravity[1] !== 0) continue; // skip center unless specified
                     var diff = Math.abs(xk - _gravity[0]) + Math.abs(yk - _gravity[1]);
                     if(diff < bestDiff) {
                         bestKey = [xk, yk];
@@ -464,47 +464,55 @@
         };
 
         _tooltip.theme = function(name){
-            _theme = themesByName[name] || defaultTheme;
+            if(arguments.length === 0) return _theme;
+            _theme = themesByName[name];
             return this;
         };
 
         _tooltip.target = function(target){
+            if(arguments.length === 0) return _target;
             var node = target;
             while(node && node.length > 0){
                 node = node[0];
             }
-            _target = node || defaultTarget;
+            _target = node;
             return this;
         };
 
         _tooltip.holdDuration = function(duration){
-            _holdDuration = duration || defaultHoldDuration;
+            if(arguments.length === 0) return _holdDuration;
+            _holdDuration = duration;
             return this;
         };
 
         _tooltip.fadeInDuration = function(duration){
-            _fadeInDuration = duration || defaultFadeInDuration;
+            if(arguments.length === 0) return _fadeInDuration;
+            _fadeInDuration = duration;
             return this;
         };
 
         _tooltip.fadeOutDuration = function(duration){
-            _fadeOutDuration = duration || defaultFadeOutDuration;
+            if(arguments.length === 0) return _fadeOutDuration;
+            _fadeOutDuration = duration;
             return this;
         };
 
         _tooltip.distance = function (distance) {
-            _distance = distance || defaultDistance;
+            if(arguments.length === 0) return _distance;
+            _distance =  distance;
             return this;
         };
 
         _tooltip.gravity = function (direction) {
-            _gravityDirection = direction || defaultGravityDirection;
+            if(arguments.length === 0) return _gravity;
+            _gravityDirection = direction;
             _gravity = resolveGravity(_gravityDirection);
             return this;
         };
 
         _tooltip.by = function (direction) {
-            _byDirection = direction || defaultByDirection;
+            if(arguments.length === 0) return _by;
+            _byDirection = direction;
             _by = resolveGravity(_byDirection);
             return this;
         };
