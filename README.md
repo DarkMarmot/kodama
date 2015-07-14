@@ -156,7 +156,7 @@ Methods invoked on the d3.kodama namespace can be chained when used as setters. 
 
 ### Tooltip Instance Configuration Methods
 
-Methods invoked on the d3.kodama.tooltip() instance can be chained when used as setters. Defaults will be derived from the global configuration methods listed above.
+Methods invoked on the d3.kodama.tooltip() instance can be chained when used as setters. Call without arguments to inspect current instance values. Defaults will be derived from the global configuration methods listed above when the instance is created.
 
 |Name | Parameters | Description |
 |-----|------------------------|-------------|
