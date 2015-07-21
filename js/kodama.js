@@ -1,5 +1,5 @@
 /**
- * kodama.js (v1.4.2)
+ * kodama.js (v1.4.3)
  *
  * Copyright (c) 2015 Scott Southworth & Contributors
  *
@@ -131,6 +131,8 @@
             .style('left', 0)
             .style('top', 0)
             .style('visibility', 'hidden')
+            .style('pointer-events', 'none')
+            .attr('class','kodama-tooltip')
             .attr('name', 'kodama');
 
         // handles mouse position placement and fade out transitions
