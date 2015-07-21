@@ -1,6 +1,6 @@
 {
   "name": "kodama",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "d3 tooltip with jquery support",
   "main": "kodama.js",
   "scripts": {
@@ -13,7 +13,8 @@
   "keywords": [
     "d3",
     "tooltip",
-    "popover"
+    "popover",
+    "jquery"
   ],
   "authors": [
     "Scott Southworth <scott.southworth@gmail.com>"
