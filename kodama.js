@@ -474,7 +474,6 @@
 
         };
 
-<<<<<<< Updated upstream
         _tooltip.activate = function(){
 
             activated = true;
