@@ -228,10 +228,8 @@
             var patchedStyle = this.patchedTheme[uiCompName];
             var activeStyle = this.themeObj[uiCompName];
 
-            for (var cssProp in activeStyle) {
-              if (patchedStyle.hasOwnProperty(cssProp)) {
-                activeStyle[cssProp] = patchedStyle[cssProp];
-              }
+            for (var cssProp in patchedStyle) {
+              activeStyle[cssProp] = patchedStyle[cssProp];
             }
 
             return activeStyle;
@@ -243,19 +241,15 @@
 
         _Theme.prototype.patch = function ThemePatch (uiComp) {
           for (var uiCompName in uiComp) {
-            if (this.validUIComps.indexOf(uiCompName)) { // check vs whitelist
-              this.patchedStyle[uiCompName] = {};
+            if (this.validUIComps.indexOf(uiCompName) >= 0) { // check vs whitelist
+              this.patchedTheme[uiCompName] = {};
 
               for (var cssProp in uiComp[uiCompName]) {
                 if (uiComp[uiCompName].hasOwnProperty(cssProp)) {
-                  this.patchedStyle[uiCompName][cssProp] =  uiComp[uiCompName][cssProp];
+                  this.patchedTheme[uiCompName][cssProp] =  uiComp[uiCompName][cssProp];
                 }
               }
             }
-          }
-
-          if (this.validUIComps.indexOf(uiComp)) {
-            this.patchedTheme[uiComp][prop] = value;
           }
         };
 
@@ -313,6 +307,7 @@
             holderSel
                 .append('div')
                 .attr(attrs)
+                .attr("name", "kodama-frame") // TODO not sure if going to clobber prev attr
                 .style(_theme.get("frame"))
                 .datum(tipDisplayData)
                 .each(function (d) {
@@ -513,8 +508,9 @@
             return this;
         };
 
-        _tooltip.patchTheme = function patchTheme (uiComp, prop, value) {
-          _theme.patch(uiComp, prop, value);
+        _tooltip.patchTheme = function patchTheme (uiComp) {
+          _theme.patch(uiComp);
+          return this;
         };
 
 
