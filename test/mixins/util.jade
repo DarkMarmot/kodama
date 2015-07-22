@@ -1,0 +1,12 @@
+mixin script(src, type)
+  if (type && type !=="application/javascript" && type !== "text/javascript")
+    script(type=type, src=src)
+
+  script(type="application/javascript", src=src)
+
+mixin link (href, rel)
+  if (rel && rel !== "stylesheet")
+    link(rel=rel, href=href)
+
+  link(rel="stylesheet", href=href)
+

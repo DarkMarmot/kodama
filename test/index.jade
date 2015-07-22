@@ -1,0 +1,83 @@
+extends base
+block body
+  h1 hello here be the tests
+
+  #mocha
+
+  +script("/js/mocha.js")
+  +script("/js/should.js")
+
+  +script("/js/d3.js")
+  +script("/js/kodama.js")
+
+  script.
+    mocha.setup('bdd')
+
+  script.
+    describe("d3", function () {
+      it("is here", function () {
+        d3.should.be.ok
+      })
+    })
+
+    describe("kodama", function () {
+      it("is also here", function () {
+        d3.kodama.should.be.ok
+      })
+
+      describe("#theme", function () {
+        it("should be a method", function () {
+          d3.kodama.theme.should.be.a.function
+        })
+
+        it("that returns a string when no args passed", function () {
+          d3.kodama.theme().should.be.a.string
+        })
+      })
+
+      describe("#themeRegistry", function () {
+        it("is a method", function () {
+          d3.kodama.themeRegistry.should.be.a.function
+        })
+
+        it("returns an object when passed a string theme name", function () {
+          var defaultThemeName = d3.kodama.theme()
+          d3.kodama.themeRegistry(defaultThemeName).should.be.an.object
+        })
+      })
+
+      describe("the theme object", function () {
+        var themeObj = d3.kodama.themeRegistry(d3.kodama.theme())
+
+        describe("theme object props", function () {
+          it("should map tooltip ui parts, by name, to style objects", function () {
+            themeObj.title.should.be.an.object
+            themeObj.item_title.should.be.an.object
+            themeObj.item_value.should.be.an.object
+            themeObj.frame.should.be.an.object
+          })
+        })
+
+        describe("default theme style object frame prop font-size", function () {
+          it("should default to string 12px", function () {
+            themeObj.frame["font-size"].should.eql("12px")
+          })
+        })
+      })
+
+        /*
+          d3.kodama.tooltip().attr().patchTheme({frame: {...}}).format()) < this will have patched styles
+          d3.kodama.tooltip().format() < this one will not
+        */
+      describe("#patchTheme", function () {
+        it("should take an object with a uiComp keying a style object", function () {
+          d3.kodama.tooltip()
+        })
+        it("should only affect kodama at runtime for the instance on which it's called")
+      })
+    })
+
+  script.
+    mocha.checkLeaks()
+    mocha.globals(['d3'])
+    mocha.run()
