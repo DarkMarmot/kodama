@@ -216,6 +216,42 @@
 
     // returns a function/object with a config api and accepting a d3 selection to wire handlers
     kodama.tooltip = function() {
+        function _Theme (themeObj) {
+          this.themeObj = themeObj;
+          this.patchedTheme = {};
+          this.validUIComps = ["frame", "title", "item_title", "item_value"];
+        }
+
+        _Theme.prototype.get = function ThemeGet (uiCompName) {
+          // if we've patched 'frame', for instance
+          if (this.patchedTheme.hasOwnProperty(uiCompName)) {
+            var patchedStyle = this.patchedTheme[uiCompName];
+            var activeStyle = this.themeObj[uiCompName];
+
+            for (var cssProp in patchedStyle) {
+              activeStyle[cssProp] = patchedStyle[cssProp];
+            }
+
+            return activeStyle;
+
+          } else {
+            return this.themeObj[uiCompName];
+          }
+        };
+
+        _Theme.prototype.patch = function ThemePatch (uiComp) {
+          for (var uiCompName in uiComp) {
+            if (this.validUIComps.indexOf(uiCompName) >= 0) { // check vs whitelist
+              this.patchedTheme[uiCompName] = {};
+
+              for (var cssProp in uiComp[uiCompName]) {
+                if (uiComp[uiCompName].hasOwnProperty(cssProp)) {
+                  this.patchedTheme[uiCompName][cssProp] =  uiComp[uiCompName][cssProp];
+                }
+              }
+            }
+          }
+        };
 
         var _offsets = {};
         var _options = undefined;
@@ -227,7 +263,7 @@
         var _gravity = defaultGravity;
         var _byDirection = defaultByDirection;
         var _by = defaultBy;
-        var _theme = defaultTheme;
+        var _theme = new _Theme(defaultTheme);
         var _holdDuration = defaultHoldDuration;
         var _fadeInDuration = defaultFadeInDuration;
         var _fadeOutDuration = defaultFadeOutDuration;
@@ -271,7 +307,8 @@
             holderSel
                 .append('div')
                 .attr(attrs)
-                .style(_theme.frame)
+                .attr("name", "kodama-frame") // TODO not sure if going to clobber prev attr
+                .style(_theme.get("frame"))
                 .datum(tipDisplayData)
                 .each(function (d) {
 
@@ -280,7 +317,7 @@
                     if (d.title) {
                         sel
                             .append('div')
-                            .style(_theme.title)
+                            .style(_theme.get("title"))
                             .append('span')
                             .html(d.title);
                     }
@@ -297,8 +334,8 @@
                                 var tr = d3.select(this);
                                 var titleCell = tr.append('td');
                                 var valueCell = tr.append('td');
-                                titleCell.html(item.title + ':').style(_theme.item_title);
-                                valueCell.html(item.value).style(_theme.item_value);
+                                titleCell.html(item.title + ':').style(_theme.get("item_title"));
+                                valueCell.html(item.value).style(_theme.get("item_value"));
 
                             });
 
@@ -470,6 +507,12 @@
             _theme = themesByName[name];
             return this;
         };
+
+        _tooltip.patchTheme = function patchTheme (uiComp) {
+          _theme.patch(uiComp);
+          return this;
+        };
+
 
         _tooltip.target = function(target){
             if(arguments.length === 0) return _target;
