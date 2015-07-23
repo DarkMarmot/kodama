@@ -264,6 +264,7 @@
         var _byDirection = defaultByDirection;
         var _by = defaultBy;
         var _theme = new _Theme(defaultTheme);
+        var _patch;
         var _holdDuration = defaultHoldDuration;
         var _fadeInDuration = defaultFadeInDuration;
         var _fadeOutDuration = defaultFadeOutDuration;
@@ -504,12 +505,13 @@
 
         _tooltip.theme = function(name){
             if(arguments.length === 0) return _theme;
-            _theme = themesByName[name];
+            _theme = new _Theme(themesByName[name]);
             return this;
         };
 
         _tooltip.patchTheme = function patchTheme (uiComp) {
-          _theme.patch(uiComp);
+          if(arguments.length === 0) return _patch;
+          _patch = uiComp;
           return this;
         };
 
@@ -604,6 +606,11 @@
                 tipDisplayData = (_formatFunc && _sourceData) ? _formatFunc(_sourceData, _sourceKey) : _sourceData;
 
                 _tooltip.options(tipDisplayData);
+
+                if (_patch) {
+                  _theme.patch(_patch);
+                }
+
                 _tooltip._build();
 
             }
