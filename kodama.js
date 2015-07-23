@@ -510,7 +510,6 @@
         };
 
         _tooltip.patchTheme = function patchTheme (uiComp) {
-          //_theme.patch(uiComp);
           if(arguments.length === 0) return _patch;
           _patch = uiComp;
           return this;
