@@ -97,6 +97,7 @@
     var defaultThemeName = 'kodama';
     var defaultGravityDirection = 'top';
     var defaultByDirection = 'top';
+                        //resolveGravity removes '-' from user input, ex: 'lower-right' --> 'lowerright'
     var defaultGravity = resolveGravity(defaultGravityDirection);
     var defaultBy = resolveGravity(defaultByDirection);
     var defaultDistance = 25;
@@ -116,6 +117,15 @@
         item_title: {'text-align': 'right', 'color': 'rgb(220,200,120)'},
         item_value: {'padding': '1px 2px 1px 10px', 'color': 'rgb(234, 224, 184)'}
     };
+
+    //lets you pass an object with multiple styles to d3 using .call()
+    var multiStyles = function (styles) {
+      return function(selection) {
+        for (var property in styles) {
+          selection.style(property, styles[property]);
+        }
+      };
+    }
 
     kodama.init = function(node){
 
@@ -139,7 +149,7 @@
         tipSel = baseSel
             .append('div')
             .attr('name', 'kodamaTip')
-            .style({'position': 'relative', 'pointer-events': 'none', 'z-index': 9999})
+            .call(multiStyles({'position': 'relative', 'pointer-events': 'none', 'z-index': 9999}))
             .style('opacity', 0);
 
         // handles screen gravity offset placement and transitions
@@ -223,7 +233,9 @@
         var _sourceData = undefined;
         var _formatFunc = null;
         var _distance = defaultDistance;
+        //user input gravity direction
         var _gravityDirection = defaultGravityDirection;
+        //resolved gravity direction
         var _gravity = defaultGravity;
         var _byDirection = defaultByDirection;
         var _by = defaultBy;
@@ -259,6 +271,7 @@
 
         _tooltip._build = function _build() {
 
+          //at this point _tooltip.show has been activated... so the tooltip is redrawn on any mouse event on an element
             if (!tipDisplayData) {
                 _tooltip.fadeOut();
                 return;
@@ -270,8 +283,8 @@
 
             holderSel
                 .append('div')
-                .attr(attrs)
-                .style(_theme.frame)
+                // .attr(attrs)
+                .call(multiStyles(_theme.frame))
                 .datum(tipDisplayData)
                 .each(function (d) {
 
@@ -280,7 +293,7 @@
                     if (d.title) {
                         sel
                             .append('div')
-                            .style(_theme.title)
+                            .call(multiStyles(_theme.title))
                             .append('span')
                             .html(d.title);
                     }
@@ -309,6 +322,9 @@
             var xOff = holderSel.node().clientWidth / 2;
             var yOff = holderSel.node().clientHeight / 2;
 
+            /*if there's a new offset, reposition tooltip by resetting _offsets...
+            when _tooltip._update(true) is called it sets justRebuilt to true, which
+            activates repositioning */
             for (var i = -1; i <= 1; i++) {
                 for (var j = -1; j <= 1; j++) {
                     var k = i + ":" + j;
@@ -368,15 +384,16 @@
             var left = x - tw / 2;
             var top = y - th / 2;
 
-            tipSel.style({
+            tipSel.call(multiStyles({
                 left: left + 'px',
                 top: top + 'px'
-            });
+            }))
 
             var k = bestKey[0] + ':' + bestKey[1];
 
             var moved = Math.max(Math.abs(offsetSwitch[0] - x), Math.abs(offsetSwitch[1] - y));
 
+            //delayed reposition of tooltip if new offset
             if (justRebuilt || (k !== offsetKey && moved > _distance)) {
 
                 offsetKey = k;
@@ -385,8 +402,8 @@
                 var offsetStyle = _offsets[k];
 
                 holderSel
-                    .transition().ease('cubic-out').duration(250)
-                    .style(offsetStyle);
+                    .transition().ease(d3.easeCubicOut).duration(250)
+                    .call(multiStyles(offsetStyle));
             }
         };
 
@@ -456,7 +473,7 @@
                 baseSel.transition()
                     .delay(_holdDuration)
                     .duration(0)
-                    .each('start', _tooltip.activate)
+                    .on('start', _tooltip.activate)
                     .style('visibility','visible');
 
             } else {
@@ -522,6 +539,7 @@
         _tooltip.options = function(options) {
 
             if(arguments.length === 0) return _options;
+
             if(!options) return this;
 
             if(options.theme){ // if a theme is specified
@@ -548,11 +566,13 @@
             return this;
         };
 
+        //_tooltip.show is called for all mouse events on each selection (in & out)
         _tooltip.show = function(sourceData, sourceKey){
 
             _sourceData = sourceData;
             _sourceKey = sourceKey;
 
+            //if new sourceData or new format
             if(_sourceData !== lastSourceDataShown || _formatFunc !== lastFormatFuncShown){
 
                 lastFormatFuncShown = _formatFunc;
