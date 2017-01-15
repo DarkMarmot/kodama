@@ -19,12 +19,12 @@
   "authors": [
     "Scott Southworth <scott.southworth@gmail.com>"
   ],
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/DarkMarmot/kodama/issues"
   },
   "homepage": "https://github.com/DarkMarmot/kodama",
   "dependencies": {
-    "d3": "^3.5.5"
+    "d3": "4"
   }
 }
