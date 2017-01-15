@@ -1,6 +1,6 @@
 {
   "name": "kodama",
-  "version": "1.4.3",
+  "version": "2.0.0",
   "description": "d3 tooltip with jquery support",
   "main": "kodama.js",
   "scripts": {
